@@ -11,6 +11,7 @@ function setup(){
     fullscreen();
     usernameInput = createInput('');
     usernameInput.changed(setUsername);
+    rescale();
 }
 function draw(){
     background('#2f4f4f');
