@@ -10,7 +10,11 @@ function setup(){
     createCanvas(windowWidth, windowHeight);
     fullscreen();
     usernameInput = createInput('');
-    usernameInput.changed(setUsername);
+    usernameInput.elt.addEventListener('keydown', function(event) {
+        if (event.keyCode === 13) {
+            setUsername();
+        }
+    });
     rescale();
 }
 function draw(){
