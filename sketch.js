@@ -10,9 +10,6 @@ function setup(){
     createCanvas(windowWidth, windowHeight);
     fullscreen();
     usernameInput = createInput('');
-    usernameInput.size(height/8*4,height/8/10*4);
-    usernameInput.style('position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);');
-    usernameInput.position(width/2, height/2);
     usernameInput.changed(setUsername);
 }
 function draw(){
@@ -67,9 +64,12 @@ function setUsername(){
         token = result;
     });
 }
+function rescale(){
+    usernameInput.size(height/8*4,height/8/10*4);
+    usernameInput.style('position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);');
+    usernameInput.position(width/2, height/2);
+}
 function windowResized() {
   resizeCanvas(windowWidth, windowHeight);
-  usernameInput.size(100,20);
-  usernameInput.style('position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);');
-  usernameInput.position(width/2, height/2);
+  rescale();
 }
