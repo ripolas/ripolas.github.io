@@ -1,59 +1,10 @@
-html, body, #canvas-container {
-  margin: 0;
-  padding: 0;
-  width: 100%;
+html, body {
   height: 100%;
-  overflow: hidden;
 }
 
-button {
-  border: none;
-  background-color: #17ad71;
-  color: #dddddd;
-  padding: 0px 0px;
-  cursor: pointer;
-  border-radius: 10px;
-  font-size: 14px;
-  text-align: center;
-  line-height: 1.5;
+body {
+  margin: 0;
   display: flex;
+  justify-content: center;
   align-items: center;
-  outline: 1px solid #00a254;
-  justify-content: center;
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-}
-
-input[type="text"], input[type="number"], input[type="password"] {
-  border: none;
-  background-color: #24302b;
-  color: #dddddd;
-  padding: 0px 0px;
-  outline: 1px solid #00a254;
-  justify-content: center;
-  border-radius: 10px;
-  text-align: center;
-}
-
-input:focus {
-  outline: 3px solid #008bec;
-}
-
-button:hover {
-  background-color: #00240c;
-  transition-duration: 0.5s;
-}
-
-@media screen and (min-width: 600px) {
-  button, input[type="button"], input[type="submit"], input[type="text"], input[type="number"] {
-    font-size: 18px;
-  }
-}
-
-@media screen and (max-width: 400px) {
-  button, input[type="button"], input[type="submit"], input[type="text"], input[type="number"] {
-    font-size: 8px;
-  }
 }
