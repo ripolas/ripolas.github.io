@@ -1,10 +1,8 @@
 html, body {
   height: 100%;
-}
-
-body {
   margin: 0;
   display: flex;
+  overflow: hidden; 
   justify-content: center;
   align-items: center;
 }
