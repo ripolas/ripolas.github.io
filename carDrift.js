@@ -3,14 +3,16 @@ let wpress = false;
 let apress = false;
 let spress = false;
 let dpress = false;
+let scalefact = 0.5;
+let camcoords;
 function setup() {
   createCanvas(windowWidth,windowHeight);
-  car=new Car(width/2,height/2,100,30);
+  camcoords = createVector(0,0);
+  car=new Car(width/2,height/2,100/scalefact,30/scalefact,"roadster");
 }
 function draw() {
   background(0);
   car.update();
-  console.log(wpress);
   car.show();
 }
 function keyPressed(){
@@ -42,21 +44,25 @@ function keyReleased(){
   }
 }
 class Car{
-  constructor(x,y,w,h){
+  constructor(x,y,w,h,name){
     this.pos = createVector(x,y);
     this.w=w;
     this.h=h;
-    this.accelfact = 1;
+    this.name=name;
+    this.img=loadImage("data/"+name+".png");
+    this.accelfact = 1/scalefact;
     this.turnfact = 0;
     this.maxturnfact = 3.5;
     this.direction = 0;
     this.vel = createVector(0,0);
     this.accelforce = 0;
-    this.maxspeed = 1;
+    this.maxspeed = 1/scalefact;
     this.speed = 0;
   }
   update(){
-     if(wpress){
+    camcoords.x += ((-this.pos.x+width/2 ) - camcoords.x)/5;
+    camcoords.y += ((-this.pos.y+height/2) - camcoords.y)/5;
+    if(wpress){
        this.accelforce = this.accelfact;
      }else{
        this.accelforce = 0;
@@ -66,7 +72,7 @@ class Car{
      this.vel.add(createVector(cos(radians(this.direction))*this.speed,sin(radians(this.direction))*this.speed));
      this.vel.mult(0.95);
      this.speed*=0.95;
-     this.turnfact = map(this.speed,0,this.maxspeed,0,3.5);
+     this.turnfact = map(this.speed,0,this.maxspeed,0,this.maxturnfact);
      if(apress){
        this.direction-=this.turnfact;
      }
@@ -79,11 +85,10 @@ class Car{
   }
   show(){
     push();
-    translate(this.pos.x,this.pos.y);
+    translate(this.pos.x+camcoords.x,this.pos.y+camcoords.y);
     rotate(radians(this.direction));
-    rectMode(CENTER);
-    fill(255,0,0);
-    rect(0,0,this.w,this.h);
+    imageMode(CENTER);
+    image(this.img,0,0,this.w,this.w);
     pop();
   }
 }
