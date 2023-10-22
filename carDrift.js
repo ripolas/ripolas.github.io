@@ -6,7 +6,6 @@ let dpress = false;
 let scalefact = 1;
 let camcoords;
 let trackimg;
-let editor = false;
 let p1;
 let p2;
 let globalmousecoords;
@@ -15,12 +14,25 @@ let checkpoints=[];
 let stuff;
 let tst;
 let starttst;
-function preload(){
+let st1;
+let st2;
+let strtlinetst;
+let checkpointspassed=0;
+let menu = true;
+let countdown = false;
+let racestarted = false;
+let editor = false;
+function setup() {
+  createCanvas(windowWidth,windowHeight);
+  setupmenu();
+}
+function setupmenu(){
+}
+function setuprace(){
   tst = loadStrings("data/checkpoints.txt");
   starttst=loadStrings("data/start.txt");
+  strtlinetst = loadStrings("data/finishline.txt");
   trackimg = loadImage("data/track.png");
-}
-function setup() {
   stuff=tst;
   for(let i = 0;i<tst.length;i++){
     if(tst[i]!=undefined){
@@ -28,19 +40,51 @@ function setup() {
       checkpoints.push(new Checkpoint(splitted[0],splitted[1],splitted[2],splitted[3],i));
     }
   }
+  st1 = createVector(float(split(strtlinetst[0],'`')[0]),float(split(strtlinetst[0],'`')[1]));
+  st2 = createVector(float(split(strtlinetst[0],'`')[2]),float(split(strtlinetst[0],'`')[3]));
   let carposx = float(starttst[0].split('`')[0]);
   let carposy = float(starttst[0].split('`')[1]);
   p1 = createVector(-1,-1);
-  createCanvas(windowWidth,windowHeight);
   p2 = createVector(-1,-1);
   camcoords = createVector(0,0);
   car=new Car(carposx,carposy,150/scalefact,45/scalefact,"roadster");
 }
 function draw() {
+  if(menu){
+    menudraw();
+  }else if(countdown){
+    countdowndraw();
+  }else if(racestarted){
+    racedraw();
+  }
+}
+function menudraw(){
+  
+  background('#252323');
+  fill('#fdfeff');
+  textAlign(CENTER,CENTER);
+  textSize(60);
+  text("testtext",width/2,height/2);
+}
+function countdowndraw(){
+  
+}
+function racedraw(){
   image(trackimg,camcoords.x,camcoords.y,trackimg.width*3,trackimg.height*3);
   car.update();
   for(let i = 0;i<checkpoints.length;i++){
     checkpoints[i].update();
+  }
+  if(checkpointspassed==checkpoints.length){
+    if(car.pos.x>min(st1.x,st2.x)&&car.pos.x<max(st1.x,st2.x)){
+      if(car.pos.y>min(st1.y,st2.y)&&car.pos.y<max(st1.y,st2.y)){
+        console.log("FINISHED!!!");
+        checkpointspassed = 0;
+        for(let i = 0;i<checkpoints.length;i++){
+          checkpoints[i].reset();
+        }
+      }
+    }
   }
   car.show();
   if(editor){
@@ -124,7 +168,7 @@ class Car{
     this.accelfact = 1/scalefact;
     this.turnfact = 0;
     this.maxturnfact = 3.5;
-    this.direction = 0;
+    this.direction = 180;
     this.vel = createVector(0,0);
     this.accelforce = 0;
     this.maxspeed = 1/scalefact;
@@ -184,6 +228,7 @@ class Checkpoint{
       if(car.pos.x>min(this.v1.x,this.v2.x)&&car.pos.x<max(this.v1.x,this.v2.x)){
         if(car.pos.y>min(this.v1.y,this.v2.y)&&car.pos.y<max(this.v1.y,this.v2.y)){
           this.passed=true;
+          checkpointspassed++;
         }
       }
     }
