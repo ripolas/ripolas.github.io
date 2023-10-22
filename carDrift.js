@@ -21,18 +21,30 @@ let checkpointspassed=0;
 let menu = true;
 let countdown = false;
 let racestarted = false;
+let currentframe = 0;
 let editor = false;
+function preload(){
+  tst = loadStrings("data/checkpoints.txt");
+  starttst=loadStrings("data/start.txt");
+  strtlinetst = loadStrings("data/finishline.txt");
+  trackimg = loadImage("data/track.png");
+}
 function setup() {
   createCanvas(windowWidth,windowHeight);
   setupmenu();
 }
 function setupmenu(){
+  startbtn = createButton('start');
+  startbtn.addClass('startbtn');
+  startbtn.position(width/2,height/2);
+  startbtn.size(width/4,height/5);
+  startbtn.mousePressed(setuprace);
 }
 function setuprace(){
-  tst = loadStrings("data/checkpoints.txt");
-  starttst=loadStrings("data/start.txt");
-  strtlinetst = loadStrings("data/finishline.txt");
-  trackimg = loadImage("data/track.png");
+  countdownstartframe = currentframe;
+  menu=false;
+  countdown=true;
+  startbtn.remove();
   stuff=tst;
   for(let i = 0;i<tst.length;i++){
     if(tst[i]!=undefined){
@@ -47,9 +59,10 @@ function setuprace(){
   p1 = createVector(-1,-1);
   p2 = createVector(-1,-1);
   camcoords = createVector(0,0);
-  car=new Car(carposx,carposy,150/scalefact,45/scalefact,"roadster");
+  car=new Car(carposx,carposy,150/scalefact,45/scalefact,"ford");
 }
 function draw() {
+  currentframe++;
   if(menu){
     menudraw();
   }else if(countdown){
@@ -58,16 +71,47 @@ function draw() {
     racedraw();
   }
 }
+let startbtn;
+let countdownstartframe;
 function menudraw(){
-  
   background('#252323');
   fill('#fdfeff');
   textAlign(CENTER,CENTER);
   textSize(60);
   text("testtext",width/2,height/2);
 }
+
 function countdowndraw(){
-  
+  image(trackimg,camcoords.x,camcoords.y,trackimg.width*3,trackimg.height*3);
+  wpress=false;
+  apress=false;
+  dpress=false;
+  spress=false;
+  car.update();
+  for(let i = 0;i<checkpoints.length;i++){
+    checkpoints[i].update();
+  }
+  if(checkpointspassed==checkpoints.length){
+    if(car.pos.x>min(st1.x,st2.x)&&car.pos.x<max(st1.x,st2.x)){
+      if(car.pos.y>min(st1.y,st2.y)&&car.pos.y<max(st1.y,st2.y)){
+        console.log("FINISHED!!!");
+        checkpointspassed = 0;
+        for(let i = 0;i<checkpoints.length;i++){
+          checkpoints[i].reset();
+        }
+      }
+    }
+  }
+  car.show();
+  if(editor){
+    globalmousecoords = createVector(mouseX-camcoords.x,mouseY-camcoords.y);
+    rect(min(p1.x,p2.x)+camcoords.x, min(p1.y,p2.y)+camcoords.y, max(p1.x,p2.x)-min(p1.x,p2.x), max(p1.y,p2.y)-min(p1.y,p2.y));
+  }
+  fill('#fdfeff');
+  textAlign(CENTER,CENTER);
+  textSize(60);
+  console.log(5-int((currentframe-countdownstartframe)/60));
+  text(5-int((currentframe-countdownstartframe)/60),width/2,height/6);
 }
 function racedraw(){
   image(trackimg,camcoords.x,camcoords.y,trackimg.width*3,trackimg.height*3);
@@ -174,11 +218,12 @@ class Car{
     this.maxspeed = 1/scalefact;
     this.speed = 0;
     this.friction = 0.95;
+    camcoords.x += ((-this.pos.x+width/2 ) - camcoords.x);
+    camcoords.y += ((-this.pos.y+height/2) - camcoords.y);
   }
   update(){
      camcoords.x += ((-this.pos.x+width/2 ) - camcoords.x)/5;
      camcoords.y += ((-this.pos.y+height/2) - camcoords.y)/5;
-     
      if(wpress){
        this.accelforce = this.accelfact;
        this.friction = 0.95;
