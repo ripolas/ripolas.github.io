@@ -6,7 +6,7 @@ let dpress = false;
 let scalefact = 1;
 let camcoords;
 let trackimg;
-let editor = true;
+let editor = false;
 let p1;
 let p2;
 let globalmousecoords;
@@ -34,7 +34,7 @@ function setup() {
   createCanvas(windowWidth,windowHeight);
   p2 = createVector(-1,-1);
   camcoords = createVector(0,0);
-  car=new Car(carposx,carposy,150/scalefact,45/scalefact,"ford");
+  car=new Car(carposx,carposy,150/scalefact,45/scalefact,"roadster");
 }
 function draw() {
   image(trackimg,camcoords.x,camcoords.y,trackimg.width*3,trackimg.height*3);
