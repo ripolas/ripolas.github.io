@@ -303,7 +303,6 @@ class Car{
        }else{
          this.speed = max(this.speed,-this.maxspeed/10);
        }
-       console.log(trackimg.get(this.pos.x,this.pos.y)[0]);
        if(trackimg.get(this.pos.x,this.pos.y)[0]!=77&&trackimg.get(this.pos.x,this.pos.y)[0]==trackimg.get(this.pos.x,this.pos.y)[1]){
          this.vel.mult(0.9);
          this.speed*=0.5;
