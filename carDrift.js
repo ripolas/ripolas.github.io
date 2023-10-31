@@ -18,70 +18,113 @@ let st1;
 let st2;
 let strtlinetst;
 let checkpointspassed=0;
-let menu = true;
+let title = true;
 let countdown = false;
 let racestarted = false;
 let currentframe = 0;
 let laps = 0;
 let editor = false;
+let carnames = ['roadster','skoda','ford'];
+let trackselected = 0;
+let carselected = 0;
+let trackscaleup = 0.5;
+let music;
+let musicstarted = false;
+let lights = [];
+let titlescreenimg;
+let playbtnimg;
 function preload(){
-  tst = loadStrings("data/checkpoints.txt");
-  starttst=loadStrings("data/start.txt");
-  strtlinetst = loadStrings("data/finishline.txt");
-  trackimg = loadImage("data/track.png");
+  playbtnimg = loadImage("data/buttons/play.png");
+  titlescreenimg = loadImage("data/titlescreen/titlescreen.png");
+  tst = loadStrings("data/tracks/"+trackselected+"/checkpoints.txt");
+  starttst=loadStrings("data/tracks/"+trackselected+"/start.txt");
+  strtlinetst = loadStrings("data/tracks/"+trackselected+"/finishline.txt");
+  trackimg = loadImage("data/tracks/"+trackselected+"/track.png");
+  for(let i = 0;i<6;i++){
+    lights[i] = loadImage("data/lights/tl"+i+".png");
+  }
 }
 function setup() {
+  music = createAudio("data/Elektrace.mp3");
   createCanvas(windowWidth,windowHeight);
-  setupmenu();
+  trackimg.resize(trackimg.width*trackscaleup,trackimg.height*trackscaleup);
+  p1 = createVector(-1,-1);
+  p2 = createVector(-1,-1);
+  setuptitle();
 }
-function setupmenu(){
-  startbtn = createButton('start');
-  startbtn.addClass('startbtn');
-  startbtn.position(width/2,height/2);
-  startbtn.size(width/4,height/5);
-  startbtn.mousePressed(setuprace);
+function setuptitle(){
+  checkpoints = [];
 }
 let aftermatchstartframe;
 function setupaftermatch(){
   aftermatchstartframe = currentframe;
 }
-function setuprace(){
+function startracesetup(){
+  setuprace(trackselected, carselected);
+}
+function setuprace(trackid, carid){
   countdownstartframe = currentframe;
-  menu=false;
+  title=false;
   countdown=true;
-  startbtn.remove();
-  stuff=tst;
+  if(!editor){
+    stuff=tst;
+  }else{
+    stuff=[];
+  }
   for(let i = 0;i<tst.length;i++){
     if(tst[i]!=undefined){
       let splitted = split(tst[i],'`');
       checkpoints.push(new Checkpoint(splitted[0],splitted[1],splitted[2],splitted[3],i));
     }
   }
-  st1 = createVector(float(split(strtlinetst[0],'`')[0]),float(split(strtlinetst[0],'`')[1]));
-  st2 = createVector(float(split(strtlinetst[0],'`')[2]),float(split(strtlinetst[0],'`')[3]));
+  let tt =split(strtlinetst[0],'`');
+  st1 = createVector(float(tt[0]),float(tt[1]));
+  st2 = createVector(float(tt[2]),float(tt[3]));
   let carposx = float(starttst[0].split('`')[0]);
   let carposy = float(starttst[0].split('`')[1]);
   p1 = createVector(-1,-1);
   p2 = createVector(-1,-1);
   camcoords = createVector(0,0);
-  car=new Car(carposx,carposy,150/scalefact,45/scalefact,"ford");
+  car=new Car(carposx,carposy,150/scalefact,45/scalefact,carnames[carid]);
 }
 function draw() {
   currentframe++;
-  if(menu){
-    menudraw();
+  if(title){
+    titledraw();
   }else if(countdown){
     countdowndraw();
+    if(!musicstarted){
+      musicstarted=true;
+      music.loop();
+    }
   }else if(racestarted){
     racedraw();
   }else if(aftermatch){
     aftermatchdraw();
   }
 }
-let startbtn;
 let countdownstartframe;
-function menudraw(){
-  background('#252323');
+let btnscale = 3;
+function titledraw(){
+  noSmooth();
+  imageMode(CENTER);
+  image(titlescreenimg,width/2,height/2,width,height);
+  image(playbtnimg,width/2,height/2,playbtnimg.width*btnscale,playbtnimg.height*btnscale);
+  let worked = false;
+  if(mouseX>width/2-playbtnimg.width*btnscale/2&&mouseX<width/2+playbtnimg.width*btnscale/2){
+    if(mouseY>height/2-playbtnimg.height*btnscale/2&&mouseY<height/2+playbtnimg.height*btnscale/2){
+      worked = true;
+      cursor(HAND);
+      if(mouseIsPressed){
+        cursor(ARROW);
+        startracesetup();
+      }
+    }
+  }
+  if(!worked){
+    cursor(ARROW);
+  }
+  imageMode(CORNER);
 }
 function aftermatchdraw(){
   background('#252323');
@@ -91,27 +134,37 @@ function aftermatchdraw(){
   text("gg? this should dissapear after 5 seconds",width/2,height/2);
   if((3-int((currentframe-aftermatchstartframe)/60))<=0){
     aftermatch = false;
-    menu=true;
-    setupmenu();
+    title=true;
+    setuptitle();
   }
 }
 function countdowndraw(){
   noSmooth();
-  image(trackimg,camcoords.x,camcoords.y,trackimg.width*3,trackimg.height*3);
+  image(trackimg,camcoords.x,camcoords.y,trackimg.width,trackimg.height);
   car.show();
   fill('#fdfeff');
   textAlign(CENTER,CENTER);
   textSize(60);
-  if((3-int((currentframe-countdownstartframe)/60)<0)){
+  if((4-int((currentframe-countdownstartframe)/60)<0)){
     countdown=false;
     racestarted=true;
   }else{
-    text(3-int((currentframe-countdownstartframe)/60),width/2,height/6);
+    imageMode(CENTER);
+    let mg = lights[int((currentframe-countdownstartframe)/60)];
+    image(mg,width/2,height/6,mg.width/5,mg.height/5);
+    imageMode(CORNER);
+    //text(5-int((currentframe-countdownstartframe)/60),width/2,height/6);
   }
 }
 function racedraw(){
   noSmooth();
-  image(trackimg,camcoords.x,camcoords.y,trackimg.width*3,trackimg.height*3);
+  image(trackimg,camcoords.x,camcoords.y,trackimg.width,trackimg.height);
+  if(int((currentframe-countdownstartframe)/60)<=5){
+    imageMode(CENTER);
+    let mg = lights[int((currentframe-countdownstartframe)/60)];
+    image(mg,width/2,height/6,mg.width/5,mg.height/5);
+    imageMode(CORNER);
+  }
   car.update();
   for(let i = 0;i<checkpoints.length;i++){
     checkpoints[i].update();
@@ -141,12 +194,15 @@ function racedraw(){
   }
 }
 function mousePressed(){
-  if(editor){
-    if(!p1set){
-      p1 = globalmousecoords;
-      p1set=true;
-    }else{
-      p2 = globalmousecoords;
+  if(racestarted){
+  globalmousecoords = createVector(mouseX-camcoords.x,mouseY-camcoords.y);
+    if(editor){
+      if(!p1set){
+        p1 = globalmousecoords;
+        p1set=true;
+      }else{
+        p2 = globalmousecoords;
+      }
     }
   }
   wpress=true;
@@ -212,7 +268,7 @@ class Car{
     this.w=w;
     this.h=h;
     this.name=name;
-    this.img=loadImage("data/"+name+".png");
+    this.img=loadImage("data/cars/"+name+"/"+name+".png");
     this.accelfact = 1/scalefact;
     this.turnfact = 0;
     this.maxturnfact = 3.5;
@@ -222,6 +278,7 @@ class Car{
     this.maxspeed = 1/scalefact;
     this.speed = 0;
     this.friction = 0.95;
+    this.turnaccel=0;
     camcoords.x += ((-this.pos.x+width/2 ) - camcoords.x);
     camcoords.y += ((-this.pos.y+height/2) - camcoords.y);
   }
@@ -246,16 +303,26 @@ class Car{
        }else{
          this.speed = max(this.speed,-this.maxspeed/10);
        }
+       console.log(trackimg.get(this.pos.x,this.pos.y)[0]);
+       if(trackimg.get(this.pos.x,this.pos.y)[0]!=77&&trackimg.get(this.pos.x,this.pos.y)[0]==trackimg.get(this.pos.x,this.pos.y)[1]){
+         this.vel.mult(0.9);
+         this.speed*=0.5;
+       }
        this.vel.add(createVector(cos(radians(this.direction))*this.speed,sin(radians(this.direction))*this.speed));
        this.vel.mult(this.friction);
        this.turnfact = map(abs(this.vel.x)+abs(this.vel.y),0,this.accelfact/(1-0.95),0,this.maxturnfact);
        if(apress){
-         this.direction-=this.turnfact;
+         this.turnaccel-=(this.turnfact/0.9-this.turnfact);
        }
        if(dpress){
-         this.direction+=this.turnfact;
+         this.turnaccel+=(this.turnfact/0.9-this.turnfact);
        }
+       this.turnaccel*=0.9;
+       this.direction += this.turnaccel;
+
+  
        this.pos.add(this.vel);
+
      }
   }
   show(){
