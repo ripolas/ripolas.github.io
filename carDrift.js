@@ -39,6 +39,8 @@ let titlescreenimg;
 let playbtnimg;
 let carimgsside = [];
 let click = false;
+let trackisplaying = false;
+let fullnames = [];
 function preload(){
   arrowr = loadImage("data/buttons/arrowr.png");
   arrowl = loadImage("data/buttons/arrowl.png");
@@ -57,6 +59,9 @@ function preload(){
   for(let i = 0;i<3;i++){
     carimgsside[i] = loadImage("data/cars/"+carnames[i]+"/"+carnames[i]+"-side.png");
   }
+  for(let i = 0;i<3;i++){
+    fullnames[i] = loadStrings("data/cars/"+carnames[i]+"/fullname.txt")[0];
+  }
 }
 function setup() {
   music = createAudio("data/Elektrace.mp3");
@@ -67,6 +72,10 @@ function setup() {
   setuptitle();
 }
 function setupmenu(){
+  if(musicstarted){
+    musicstarted=false;
+    music.stop();
+  }
   checkpoints = [];
 }
 function setuptitle(){
@@ -111,10 +120,6 @@ function draw() {
     menudraw();
   }else if(countdown){
     countdowndraw();
-    if(!musicstarted){
-      musicstarted=true;
-      music.loop();
-    }
   }else if(racestarted){
     racedraw();
   }else if(aftermatch){
@@ -130,27 +135,35 @@ function menudraw(){
   imageMode(CENTER);
   background('#252323');
   let arrowscale = 4;
-  image(arrowl,0     + arrowl.width*arrowscale/2,height/2,arrowl.width*arrowscale,arrowl.height*arrowscale);
+  image(arrowl,arrowl.width*arrowscale/2,height/2,arrowl.width*arrowscale,arrowl.height*arrowscale);
   if(click){
     if(mouseX>0&&mouseX<arrowl.width*arrowscale){
       if(mouseY>height/2-arrowl.height*arrowscale/2&&mouseY<height/2+arrowl.height*arrowscale/2){
-        console.log("LEFT");
-        menuoffsetx += width;
+        if(menuoffsetx<0){
+          console.log("LEFT");
+          menuoffsetx += width;
+        }
       }
     }
   }
-  image(arrowr,width - arrowr.width*arrowscale/2,height/2,arrowr.width*arrowscale,arrowr.height*arrowscale);
-  if(click){
-    if(mouseX>width    - arrowr.width*arrowscale&&mouseX<width){
+  image(arrowr,width-arrowr.width *arrowscale/2,height/2,arrowr.width*arrowscale,arrowr.height*arrowscale);
+  if(click){ 
+    if(mouseX>width-arrowr.width *arrowscale&&mouseX<width){
       if(mouseY>height/2-arrowl.height*arrowscale/2&&mouseY<height/2+arrowl.height*arrowscale/2){
-        console.log("RIGHT");
-        menuoffsetx -= width;
+        if(menuoffsetx>-width*(carnames.length-1)){
+          console.log("RIGHT");
+          menuoffsetx -= width;
+        }
       }
     }
   }
   //image(titlescreenimg,width/2,height/2,width,height);
   let worked = false;
   for(let i = 0;i<carimgsside.length;i++){
+    textAlign(CENTER,CENTER);
+    textSize(60);
+    fill(255);
+    text(fullnames[i],i*width+width/2+menuoffsetx,height-60);
     image(carimgsside[i],i*width+width/2+menuoffsetx,height/2,carimgsside[i].width*scalefact,carimgsside[i].height*scalefact);
     if(mouseX>i*width+width/2+menuoffsetx-carimgsside[i].width*scalefact/2 && mouseX<i*width+width/2+menuoffsetx+carimgsside[i].width*scalefact/2){
       if(mouseY>height/2-carimgsside[i].height*scalefact/2&&mouseY<height/2+carimgsside[i].height*scalefact/2){
@@ -205,7 +218,7 @@ function aftermatchdraw(){
   text("gg? this should dissapear after 5 seconds",width/2,height/2);
   if((3-int((currentframe-aftermatchstartframe)/60))<=0){
     aftermatch = false;
-    title=true;
+    menu=true;
     setupmenu();
   }
 }
@@ -229,6 +242,10 @@ function countdowndraw(){
 }
 let lapdisplayscale = 10;
 function racedraw(){
+  if(!musicstarted){
+    musicstarted=true;
+    music.loop();
+  }
   noSmooth();
   image(trackimg,camcoords.x,camcoords.y,trackimg.width,trackimg.height);
   image(lapdisplayimgs[laps],width-lapdisplayimgs[laps].width*lapdisplayscale,height-lapdisplayimgs[laps].height*lapdisplayscale,lapdisplayimgs[laps].width*lapdisplayscale,lapdisplayimgs[laps].height*lapdisplayscale);
