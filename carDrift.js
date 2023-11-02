@@ -23,17 +23,25 @@ let countdown = false;
 let racestarted = false;
 let currentframe = 0;
 let laps = 0;
-let editor = false;
+let arrowr;
+let arrowl;
+let editor = true;
 let carnames = ['roadster','skoda','ford'];
 let trackselected = 0;
 let carselected = 0;
 let trackscaleup = 0.5;
+let menu = false;
 let music;
 let musicstarted = false;
 let lights = [];
+let lapdisplayimgs = [];
 let titlescreenimg;
 let playbtnimg;
+let carimgsside = [];
+let click = false;
 function preload(){
+  arrowr = loadImage("data/buttons/arrowr.png");
+  arrowl = loadImage("data/buttons/arrowl.png");
   playbtnimg = loadImage("data/buttons/play.png");
   titlescreenimg = loadImage("data/titlescreen/titlescreen.png");
   tst = loadStrings("data/tracks/"+trackselected+"/checkpoints.txt");
@@ -42,6 +50,12 @@ function preload(){
   trackimg = loadImage("data/tracks/"+trackselected+"/track.png");
   for(let i = 0;i<6;i++){
     lights[i] = loadImage("data/lights/tl"+i+".png");
+  }
+  for(let i = 1;i<=3;i++){
+    lapdisplayimgs[i-1] = loadImage("data/imgs/display"+i+".png");
+  }
+  for(let i = 0;i<3;i++){
+    carimgsside[i] = loadImage("data/cars/"+carnames[i]+"/"+carnames[i]+"-side.png");
   }
 }
 function setup() {
@@ -52,8 +66,10 @@ function setup() {
   p2 = createVector(-1,-1);
   setuptitle();
 }
-function setuptitle(){
+function setupmenu(){
   checkpoints = [];
+}
+function setuptitle(){
 }
 let aftermatchstartframe;
 function setupaftermatch(){
@@ -91,6 +107,8 @@ function draw() {
   currentframe++;
   if(title){
     titledraw();
+  }else if(menu){
+    menudraw();
   }else if(countdown){
     countdowndraw();
     if(!musicstarted){
@@ -102,9 +120,60 @@ function draw() {
   }else if(aftermatch){
     aftermatchdraw();
   }
+  click=false;
 }
 let countdownstartframe;
 let btnscale = 3;
+let menuoffsetx = 0;
+function menudraw(){
+  noSmooth();
+  imageMode(CENTER);
+  background('#252323');
+  let arrowscale = 4;
+  image(arrowl,0     + arrowl.width*arrowscale/2,height/2,arrowl.width*arrowscale,arrowl.height*arrowscale);
+  if(click){
+    if(mouseX>0&&mouseX<arrowl.width*arrowscale){
+      if(mouseY>height/2-arrowl.height*arrowscale/2&&mouseY<height/2+arrowl.height*arrowscale/2){
+        console.log("LEFT");
+        menuoffsetx += width;
+      }
+    }
+  }
+  image(arrowr,width - arrowr.width*arrowscale/2,height/2,arrowr.width*arrowscale,arrowr.height*arrowscale);
+  if(click){
+    if(mouseX>width    - arrowr.width*arrowscale&&mouseX<width){
+      if(mouseY>height/2-arrowl.height*arrowscale/2&&mouseY<height/2+arrowl.height*arrowscale/2){
+        console.log("RIGHT");
+        menuoffsetx -= width;
+      }
+    }
+  }
+  //image(titlescreenimg,width/2,height/2,width,height);
+  let worked = false;
+  for(let i = 0;i<carimgsside.length;i++){
+    image(carimgsside[i],i*width+width/2+menuoffsetx,height/2,carimgsside[i].width*scalefact,carimgsside[i].height*scalefact);
+    if(mouseX>i*width+width/2+menuoffsetx-carimgsside[i].width*scalefact/2 && mouseX<i*width+width/2+menuoffsetx+carimgsside[i].width*scalefact/2){
+      if(mouseY>height/2-carimgsside[i].height*scalefact/2&&mouseY<height/2+carimgsside[i].height*scalefact/2){
+        worked = true;
+        cursor(HAND);
+        if(click){
+          cursor(ARROW);
+          carselected = i;
+          menu=false;
+          countdown = true;
+          startracesetup();
+          //startracesetup();
+        }
+      }
+    }
+  }
+  
+  
+  if(!worked){
+    cursor(ARROW);
+  }
+  imageMode(CORNER);
+}
 function titledraw(){
   noSmooth();
   imageMode(CENTER);
@@ -115,9 +184,11 @@ function titledraw(){
     if(mouseY>height/2-playbtnimg.height*btnscale/2&&mouseY<height/2+playbtnimg.height*btnscale/2){
       worked = true;
       cursor(HAND);
-      if(mouseIsPressed){
+      if(click){
         cursor(ARROW);
-        startracesetup();
+        title=false;
+        menu=true;
+        setupmenu();
       }
     }
   }
@@ -135,7 +206,7 @@ function aftermatchdraw(){
   if((3-int((currentframe-aftermatchstartframe)/60))<=0){
     aftermatch = false;
     title=true;
-    setuptitle();
+    setupmenu();
   }
 }
 function countdowndraw(){
@@ -156,9 +227,11 @@ function countdowndraw(){
     //text(5-int((currentframe-countdownstartframe)/60),width/2,height/6);
   }
 }
+let lapdisplayscale = 10;
 function racedraw(){
   noSmooth();
   image(trackimg,camcoords.x,camcoords.y,trackimg.width,trackimg.height);
+  image(lapdisplayimgs[laps],width-lapdisplayimgs[laps].width*lapdisplayscale,height-lapdisplayimgs[laps].height*lapdisplayscale,lapdisplayimgs[laps].width*lapdisplayscale,lapdisplayimgs[laps].height*lapdisplayscale);
   if(int((currentframe-countdownstartframe)/60)<=5){
     imageMode(CENTER);
     let mg = lights[int((currentframe-countdownstartframe)/60)];
@@ -194,6 +267,7 @@ function racedraw(){
   }
 }
 function mousePressed(){
+  click=true;
   if(racestarted){
   globalmousecoords = createVector(mouseX-camcoords.x,mouseY-camcoords.y);
     if(editor){
