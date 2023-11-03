@@ -50,8 +50,8 @@ let infos =[];
 let inputs = [];
 let recording = true;
 let carbots = [];
-let botcount = 3;
-let recordedbotcount = 3;
+let botcount = 5;
+let recordedbotcount = 5;
 function preload(){
   infoimg = loadImage("data/buttons/info.png");
   arrowr = loadImage("data/buttons/arrowr.png");
@@ -379,6 +379,12 @@ function racedraw(){
   pspress = spress;
   pdpress = dpress;
   pwpress = wpress;
+  image(trackimg,0,0,width/8,width/8);
+  fill(255,0,0);
+  stroke(255,0,0);
+  strokeWeight(width/8/20);
+  point(map(car.pos.x,0,trackimg.width,0,width/8),map(car.pos.y,0,trackimg.height,0,width/8));
+  strokeWeight(1);
 }
 function mousePressed(){
   click=true;
