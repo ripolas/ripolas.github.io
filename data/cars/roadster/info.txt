@@ -1,1 +1,10 @@
-Electric 2.1s 0-100km/h 400km/h top speed 1000 km range 10h charge time 200 kWh battery 1300 hp 20.6 kWh/100km 4 Eur / 100km CO2: 0g/100km
+Electric 
+2.1s 0-100km/h 
+400km/h top speed 
+1000 km range 
+10h charge time 
+200 kWh battery 
+1300 hp 
+20.6 kWh/100km 
+4 Eur / 100km 
+CO2: 0g/100km

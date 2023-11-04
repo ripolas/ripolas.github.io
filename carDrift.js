@@ -52,12 +52,21 @@ let recording = true;
 let carbots = [];
 let botcount = 5;
 let recordedbotcount = 5;
+let locked = [false,true,true];
+let lockimg;
+let font;
+let prices = [];
+let money = 0;
+let coinimg;
 function preload(){
+  font = loadFont('data/shrifts/shrift/shrift.ttf');
+  lockimg = loadImage("data/buttons/lock.png");
   infoimg = loadImage("data/buttons/info.png");
   arrowr = loadImage("data/buttons/arrowr.png");
   arrowl = loadImage("data/buttons/arrowl.png");
   playbtnimg = loadImage("data/buttons/play.png");
   titlescreenimg = loadImage("data/titlescreen/titlescreen.png");
+  coinimg = loadImage("data/imgs/coin.png");
   tst = loadStrings("data/tracks/"+trackselected+"/checkpoints.txt");
   starttst=loadStrings("data/tracks/"+trackselected+"/start.txt");
   strtlinetst = loadStrings("data/tracks/"+trackselected+"/finishline.txt");
@@ -73,10 +82,12 @@ function preload(){
   }
   for(let i = 0;i<3;i++){
     fullnames[i] = loadStrings("data/cars/"+carnames[i]+"/fullname.txt");
-    infos[i] = loadStrings("data/cars/"+carnames[i]+"/info.txt");
+    infos[i] = loadStrings(    "data/cars/"+carnames[i]+"/info.txt");
+    prices[i] = loadStrings(   "data/cars/"+carnames[i]+"/price.txt");
   }
 }
 function setup() {
+  textFont(font);
   frameRate(60);
   console.log(fullnames);
   music = createAudio("data/Elektrace.mp3");
@@ -154,7 +165,9 @@ function menudraw(){
   imageMode(CENTER);
   background('#252323');
   let arrowscale = 4;
-  image(arrowl,arrowl.width*arrowscale/2,height/2,arrowl.width*arrowscale,arrowl.height*arrowscale);
+  if(menuoffsetx<0){
+    image(arrowl,arrowl.width*arrowscale/2,height/2,arrowl.width*arrowscale,arrowl.height*arrowscale);
+  }
   if(click){
     if(mouseX>0&&mouseX<arrowl.width*arrowscale){
       if(mouseY>height/2-arrowl.height*arrowscale/2&&mouseY<height/2+arrowl.height*arrowscale/2){
@@ -165,7 +178,9 @@ function menudraw(){
       }
     }
   }
-  image(arrowr,width-arrowr.width *arrowscale/2,height/2,arrowr.width*arrowscale,arrowr.height*arrowscale);
+  if(menuoffsetx>-width*(carnames.length-1)){
+    image(arrowr,width-arrowr.width *arrowscale/2,height/2,arrowr.width*arrowscale,arrowr.height*arrowscale);
+  }
   if(click){ 
     if(mouseX>width-arrowr.width *arrowscale&&mouseX<width){
       if(mouseY>height/2-arrowl.height*arrowscale/2&&mouseY<height/2+arrowl.height*arrowscale/2){
@@ -186,7 +201,11 @@ function menudraw(){
     textSize(60);
     fill(255);
     text(fullnames[i],i*width+width/2+menuoffsetx,60);
+    if(locked[i]){
+      tint(95);
+    }
     image(carimgsside[i],i*width+width/2+menuoffsetx,height/2,carimgsside[i].width*carfact,carimgsside[i].height*carfact);
+    noTint();
     /*
     imageMode(CORNER);
     image(infoimg,i*width,0,infobtnsize,infobtnsize);
@@ -199,28 +218,41 @@ function menudraw(){
       }
     }
     */
-    textAlign(LEFT,BOTTOM);
+    textAlign(LEFT,TOP);
     fill(255);
-    textSize(20);
+    textSize(50);
     //console.log(infos[carselected],0,height/4*3,width,height/4);
-    text(infos[carselected],0,height/4*3,width,height/4);
-    if(mouseX>i*width+width/2+menuoffsetx-carimgsside[i].width*carfact/2 && mouseX<i*width+width/2+menuoffsetx+carimgsside[i].width*carfact/2){
-      if(mouseY>height/2-carimgsside[i].height*carfact/2&&mouseY<height/2+carimgsside[i].height*carfact/2){
-        worked = true;
-        cursor(HAND);
-        carselected = i;
-        if(click){
-          cursor(ARROW);
-          menu=false;
-          countdown = true;
-          startracesetup();
-          //startracesetup();
+    for(let i = 0;i<infos[carselected].length;i++){
+      text(infos[carselected][i],arrowr.width*arrowscale,1.5*60+i*50+100,width,height-(height/2+arrowr.height*arrowscale/2));
+    }
+    if(!locked[i]){
+      if(mouseX>i*width+width/2+menuoffsetx-carimgsside[i].width*carfact/2 && mouseX<i*width+width/2+menuoffsetx+carimgsside[i].width*carfact/2){
+        if(mouseY>height/2-carimgsside[i].height*carfact/2&&mouseY<height/2+carimgsside[i].height*carfact/2){
+          worked = true;
+          cursor(HAND);
+          carselected = i;
+          if(click){
+            cursor(ARROW);
+            menu=false;
+            countdown = true;
+            startracesetup();
+            //startracesetup();
+          }
         }
       }
     }
+    if(locked[i]){
+      image(lockimg,i*width+width/2+menuoffsetx,height/2,lockimg.width*arrowscale,lockimg.height*arrowscale);
+      textAlign(CENTER,CENTER);
+      textSize(40);
+      text(prices[i],i*width+width/2+menuoffsetx,height/2+lockimg.height*arrowscale/2+40/2);
+    }
   }
-  
-  
+  textAlign(RIGHT,TOP);
+  textSize(60);
+  text(money,width-60,0);
+  imageMode(CORNER);
+  image(coinimg,width-60,0,60,60);
   if(!worked){
     cursor(ARROW);
   }
@@ -287,44 +319,48 @@ function racedraw(){
   raceframes++;
   if(!musicstarted){// first frame of race
     raceframes = 1;
-    if(wpress){
-      inputs.push('p`'+'w'+"`"+int(raceframes));
-    }
-    if(apress){
-      inputs.push('p`'+'a'+"`"+int(raceframes));
-    }
-    if(dpress){
-      inputs.push('p`'+'d'+"`"+int(raceframes));
+    if(recording){
+      if(wpress){
+        inputs.push('p`'+'w'+"`"+int(raceframes));
+      }
+      if(apress){
+        inputs.push('p`'+'a'+"`"+int(raceframes));
+      }
+      if(dpress){
+        inputs.push('p`'+'d'+"`"+int(raceframes));
+      }
     }
     musicstarted=true;
     music.loop();
   }
-  if(wpress!=pwpress){
-    if(wpress){
-      inputs.push('p`'+'w'+"`"+int(raceframes));
-    }else{
-      inputs.push('r`'+'w'+"`"+int(raceframes));
+  if(recording){
+    if(wpress!=pwpress){
+      if(wpress){
+        inputs.push('p`'+'w'+"`"+int(raceframes));
+      }else{
+        inputs.push('r`'+'w'+"`"+int(raceframes));
+      }
     }
-  }
-  if(apress!=papress){
-    if(apress){
-      inputs.push('p`'+'a'+"`"+int(raceframes));
-    }else{
-      inputs.push('r`'+'a'+"`"+int(raceframes));
+    if(apress!=papress){
+      if(apress){
+        inputs.push('p`'+'a'+"`"+int(raceframes));
+      }else{
+        inputs.push('r`'+'a'+"`"+int(raceframes));
+      }
     }
-  }
-  if(spress!=pspress){
-    if(spress){
-      inputs.push('p`'+'s'+"`"+int(raceframes));
-    }else{
-      inputs.push('r`'+'s'+"`"+int(raceframes));
+    if(spress!=pspress){
+      if(spress){
+        inputs.push('p`'+'s'+"`"+int(raceframes));
+      }else{
+        inputs.push('r`'+'s'+"`"+int(raceframes));
+      }
     }
-  }
-  if(dpress!=pdpress){
-    if(dpress){
-      inputs.push('p`'+'d'+"`"+int(raceframes));
-    }else{
-      inputs.push('r`'+'d'+"`"+int(raceframes));
+    if(dpress!=pdpress){
+      if(dpress){
+        inputs.push('p`'+'d'+"`"+int(raceframes));
+      }else{
+        inputs.push('r`'+'d'+"`"+int(raceframes));
+      }
     }
   }
   noSmooth();
@@ -385,6 +421,7 @@ function racedraw(){
   strokeWeight(width/8/20);
   point(map(car.pos.x,0,trackimg.width,0,width/8),map(car.pos.y,0,trackimg.height,0,width/8));
   strokeWeight(1);
+  stroke(255);
 }
 function mousePressed(){
   click=true;
@@ -668,7 +705,6 @@ class CarBot{
      this.pos.add(this.vel);
   }
   show(){
-    
     push();
     translate(this.pos.x+camcoords.x,this.pos.y+camcoords.y);
     rotate(radians(this.direction));
@@ -677,7 +713,5 @@ class CarBot{
     image(this.img,0,0,this.wid,this.wid);
     noTint();
     pop();
-    
-    //rect(this.pos.x+camcoords.x,this.pos.y+camcoords.y,this.w,this.h);
   }
 }

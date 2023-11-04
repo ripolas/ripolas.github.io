@@ -1,7 +1,8 @@
-Charges in 28 minutes using Rapid Charging (DC) 135kW
-And 9h 31 minutes using Home Charger (AC) 7kW
+Electric
+28m charge time using Rapid Charging (DC) 135kW
+9h 31m using Home Charger (AC) 7kW
 ~400 kilometers of range
 77 kWh Bettery
-Consumption: 6 - 6.3 km / kWh
-Running costs: 1.6 Eur / 100km
+6 - 6.3 km / kWh
+1.6 Eur / 100km
 CO2 - 0g/km

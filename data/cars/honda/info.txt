@@ -1,1 +1,6 @@
-Petrol 2 liter 140 hp engine 315NM of torque Fuel consumption: 5l / 100km Running costs: 7.5 Eur / 100km CO2: 108 - 114 g/km
+Petrol
+2 liter 140 hp engine 
+315NM of torque
+consumption: 5l / 100km 
+7.5 Eur / 100km 
+CO2: 108 - 114 g/km
