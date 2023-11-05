@@ -48,29 +48,36 @@ let fullnames = [];
 let infoimg;
 let infos =[];
 let inputs = [];
-let recording = true;
+let recording = false;
 let carbots = [];
-let botcount = 5;
-let recordedbotcount = 5;
 let locked = [false,true,true];
 let lockimg;
 let font;
 let prices = [];
 let money = 0;
 let coinimg;
+let stats = [];
+let yourplace = 1;
+let cartypes = [];
+let carbotinputs = [];
+let botcount = 4;
+let recordedbotcount =9;
 function preload(){
+  for(let i = 0;i<recordedbotcount;i++){
+    carbotinputs[i]=loadStrings("data/tracks/0/bots/bot"+i+".txt");
+  }
   font = loadFont('data/shrifts/shrift/shrift.ttf');
-  lockimg = loadImage("data/buttons/lock.png");
-  infoimg = loadImage("data/buttons/info.png");
-  arrowr = loadImage("data/buttons/arrowr.png");
-  arrowl = loadImage("data/buttons/arrowl.png");
+  lockimg = loadImage(   "data/buttons/lock.png");
+  infoimg = loadImage(   "data/buttons/info.png");
+  arrowr = loadImage(    "data/buttons/arrowr.png");
+  arrowl = loadImage(    "data/buttons/arrowl.png");
   playbtnimg = loadImage("data/buttons/play.png");
   titlescreenimg = loadImage("data/titlescreen/titlescreen.png");
   coinimg = loadImage("data/imgs/coin.png");
-  tst = loadStrings("data/tracks/"+trackselected+"/checkpoints.txt");
-  starttst=loadStrings("data/tracks/"+trackselected+"/start.txt");
+  tst = loadStrings(        "data/tracks/"+trackselected+"/checkpoints.txt");
+  starttst=loadStrings(     "data/tracks/"+trackselected+"/start.txt");
   strtlinetst = loadStrings("data/tracks/"+trackselected+"/finishline.txt");
-  trackimg = loadImage("data/tracks/"+trackselected+"/track.png");
+  trackimg = loadImage(     "data/tracks/"+trackselected+"/track.png");
   for(let i = 0;i<6;i++){
     lights[i] = loadImage("data/lights/tl"+i+".png");
   }
@@ -78,9 +85,8 @@ function preload(){
     lapdisplayimgs[i-1] = loadImage("data/imgs/display"+i+".png");
   }
   for(let i = 0;i<3;i++){
-    carimgsside[i] = loadImage("data/cars/"+carnames[i]+"/"+carnames[i]+".png");/////////////////side
-  }
-  for(let i = 0;i<3;i++){
+    stats[i] = loadStrings(    "data/cars/"+carnames[i]+"/stats.txt");
+    carimgsside[i] = loadImage("data/cars/"+carnames[i]+"/"+carnames[i]+".png");
     fullnames[i] = loadStrings("data/cars/"+carnames[i]+"/fullname.txt");
     infos[i] = loadStrings(    "data/cars/"+carnames[i]+"/info.txt");
     prices[i] = loadStrings(   "data/cars/"+carnames[i]+"/price.txt");
@@ -89,7 +95,6 @@ function preload(){
 function setup() {
   textFont(font);
   frameRate(60);
-  console.log(fullnames);
   music = createAudio("data/Elektrace.mp3");
   createCanvas(windowWidth,windowHeight);
   trackimg.resize(trackimg.width*trackscaleup,trackimg.height*trackscaleup);
@@ -136,9 +141,9 @@ function setuprace(trackid, carid){
   p1 = createVector(-1,-1);
   p2 = createVector(-1,-1);
   camcoords = createVector(0,0);
-  car=new Car(carposx,carposy,150/scalefact,45/scalefact,carnames[carid]);
+  car=new Car(carposx,carposy,150/scalefact,45/scalefact,carnames[carid],carid);
   for(let i = 0;i<botcount;i++){
-    carbots.push(new CarBot(carposx,carposy,150/scalefact,45/scalefact,carnames[int(random(0,carnames.length))],i));
+    carbots.push(new CarBot(carposx,carposy,150/scalefact,45/scalefact,int(random(0,recordedbotcount))));
   }
 }
 function draw() {
@@ -164,7 +169,7 @@ function menudraw(){
   noSmooth();
   imageMode(CENTER);
   background('#252323');
-  let arrowscale = 4;
+  let arrowscale = width/2048*4;
   if(menuoffsetx<0){
     image(arrowl,arrowl.width*arrowscale/2,height/2,arrowl.width*arrowscale,arrowl.height*arrowscale);
   }
@@ -193,14 +198,14 @@ function menudraw(){
   }
   
   //image(titlescreenimg,width/2,height/2,width,height);
-  let carfact = 0.8;
+  let carfact = arrowscale/4*0.8;
   let worked = false;
-  let infobtnsize = 60;
+  let infobtnsize = arrowscale/4*60;
   for(let i = 0;i<carimgsside.length;i++){
     textAlign(CENTER,CENTER);
-    textSize(60);
+    textSize(arrowscale/4*60);
     fill(255);
-    text(fullnames[i],i*width+width/2+menuoffsetx,60);
+    text(fullnames[i],i*width+width/2+menuoffsetx,arrowscale/4*60);
     if(locked[i]){
       tint(95);
     }
@@ -220,39 +225,43 @@ function menudraw(){
     */
     textAlign(LEFT,TOP);
     fill(255);
-    textSize(50);
-    //console.log(infos[carselected],0,height/4*3,width,height/4);
+    textSize(arrowscale/4*50);
     for(let i = 0;i<infos[carselected].length;i++){
-      text(infos[carselected][i],arrowr.width*arrowscale,1.5*60+i*50+100,width,height-(height/2+arrowr.height*arrowscale/2));
+      text(infos[carselected][i],arrowr.width*arrowscale,1.5*(arrowscale/4*60)+i*(arrowscale/4*50)+100,width,height-(height/2+arrowr.height*arrowscale/2));
     }
-    if(!locked[i]){
-      if(mouseX>i*width+width/2+menuoffsetx-carimgsside[i].width*carfact/2 && mouseX<i*width+width/2+menuoffsetx+carimgsside[i].width*carfact/2){
-        if(mouseY>height/2-carimgsside[i].height*carfact/2&&mouseY<height/2+carimgsside[i].height*carfact/2){
-          worked = true;
-          cursor(HAND);
-          carselected = i;
-          if(click){
+    if(mouseX>i*width+width/2+menuoffsetx-carimgsside[i].width*carfact/2 && mouseX<i*width+width/2+menuoffsetx+carimgsside[i].width*carfact/2){
+      if(mouseY>height/2-carimgsside[i].height*carfact/2&&mouseY<height/2+carimgsside[i].height*carfact/2){
+        worked = true;
+        cursor(HAND);
+        carselected = i;
+        if(click){
+          if(!locked[i]){
             cursor(ARROW);
             menu=false;
             countdown = true;
             startracesetup();
-            //startracesetup();
+          }else{
+            if(money>=prices[i]){
+              money-=prices[i];
+              locked[i]=false;
+            }
           }
         }
       }
     }
+    
     if(locked[i]){
       image(lockimg,i*width+width/2+menuoffsetx,height/2,lockimg.width*arrowscale,lockimg.height*arrowscale);
       textAlign(CENTER,CENTER);
-      textSize(40);
-      text(prices[i],i*width+width/2+menuoffsetx,height/2+lockimg.height*arrowscale/2+40/2);
+      textSize(arrowscale/4*40);
+      text(prices[i],i*width+width/2+menuoffsetx,height/2+lockimg.height*arrowscale/2+arrowscale/4*40/2);
     }
   }
   textAlign(RIGHT,TOP);
-  textSize(60);
-  text(money,width-60,0);
+  textSize(arrowscale/4*60);
+  text(money,width-arrowscale/4*60,0);
   imageMode(CORNER);
-  image(coinimg,width-60,0,60,60);
+  image(coinimg,width-arrowscale/4*60,0,arrowscale/4*60,arrowscale/4*60);
   if(!worked){
     cursor(ARROW);
   }
@@ -281,13 +290,23 @@ function titledraw(){
   }
   imageMode(CORNER);
 }
+let tracklength = 100;
+let co2taxrate = 50;
+let secondsofscreen = 10;
 function aftermatchdraw(){
   background('#252323');
-  fill('#fdfeff');
-  textAlign(CENTER,CENTER);
-  textSize(60);
-  text("gg? this should dissapear after 5 seconds",width/2,height/2);
-  if((3-int((currentframe-aftermatchstartframe)/60))<=0){
+  textSize(width/2048*50);
+  fill(255);
+  noStroke();
+  let environmentalcost = 5;
+  text("You placed "+yourplace+" and got paid "+map(yourplace,1,botcount+1,20000,10000)+" euros",width/2,height/6-width/2048*50);
+  text("You emitted " + tracklength/100*stats[carselected][0]+" grams of CO2",width/2,height/6);
+  text("You paid " + tracklength/100*stats[carselected][0]*environmentalcost+" euros for environmental tax",width/2,height/6+width/2048*50);
+  text("You paid " + (tracklength/100*stats[carselected][1]) + " euros for fuel",width/2,height/6+width/2048*50*2);
+  if((secondsofscreen-int((currentframe-aftermatchstartframe)/60))<=0){
+    money -= int(tracklength/100*stats[carselected][1]);
+    money -=  int(tracklength/100*stats[carselected][0]*environmentalcost);
+    money += map(yourplace,1,botcount+1,20000,10000);
     aftermatch = false;
     menu=true;
     setupmenu();
@@ -304,6 +323,11 @@ function countdowndraw(){
   if((4-int((currentframe-countdownstartframe)/60)<0)){
     countdown=false;
     racestarted=true;
+    inputs = [];
+    if(recording){
+      inputs.push(carselected);
+    }
+    yourplace = 1;
     racestartframe = currentframe;
   }else{
     imageMode(CENTER);
@@ -317,7 +341,7 @@ let lapdisplayscale = 10;
 let raceframes = 0;
 function racedraw(){
   raceframes++;
-  if(!musicstarted){// first frame of race
+  if(!musicstarted){ // first frame of race
     raceframes = 1;
     if(recording){
       if(wpress){
@@ -388,11 +412,14 @@ function racedraw(){
           laps=0;
           setupaftermatch();
           racestarted=false;
-          inputs.push('r`'+'w'+"`"+int(raceframes));
-          inputs.push('r`'+'s'+"`"+int(raceframes));
-          inputs.push('r`'+'a'+"`"+int(raceframes));
-          inputs.push('r`'+'d'+"`"+int(raceframes));
-          saveStrings(inputs,"bot0.txt");
+          if(recording){
+            inputs.push('r`'+'w'+"`"+int(raceframes));
+            inputs.push('r`'+'s'+"`"+int(raceframes));
+            inputs.push('r`'+'a'+"`"+int(raceframes));
+            inputs.push('r`'+'d'+"`"+int(raceframes));
+            saveStrings(inputs,"bot"+recordedbotcount+".txt");
+          }
+          carbots=[];
           aftermatch=true;
         }
         checkpointspassed = 0;
@@ -522,22 +549,27 @@ function keyReleased(){
   }
 }
 class Car{
-  constructor(x,y,w,h,name){
+  constructor(x,y,w,h,name,carid){
     this.pos = createVector(x,y);
     this.w=w;
     this.h=h;
     this.name=name;
     this.img=loadImage("data/cars/"+name+"/"+name+".png");
-    this.accelfact = 1/scalefact;
     this.turnfact = 0;
     this.maxturnfact = 3.5;
     this.direction = 180;
     this.vel = createVector(0,0);
     this.accelforce = 0;
-    this.maxspeed = 1/scalefact;
     this.speed = 0;
     this.friction = 0.95;
     this.turnaccel=0;
+    this.accelfact = 1/scalefact;
+    this.maxspeed = 1/scalefact;
+    this.carid=carid;
+    console.log(stats,stats[carid]);
+    this.accelfact = stats[carid][2];
+    this.maxspeed = stats[carid][3];
+    console.log(this.accelfact,this.maxspeed);
     camcoords.x += ((-this.pos.x+width/2 ) - camcoords.x);
     camcoords.y += ((-this.pos.y+height/2) - camcoords.y);
   }
@@ -614,33 +646,40 @@ class Checkpoint{
   }
 }
 class CarBot{
-  constructor(x,y,w,h,name,id){
+  constructor(x,y,w,h,id){
+    
+    this.finished = false;
     this.id=id;
-    this.inps = loadStrings("data/tracks/"+trackselected+"/bots/bot"+this.id+".txt");
+    console.log(this.id);
+    this.inps = carbotinputs[this.id];
+    this.carid = this.inps[0];
     this.pos = createVector(x,y);
     this.wid=w;
     this.h=h;
-    this.name=name;
-    this.img=loadImage("data/cars/"+name+"/"+name+".png");
-    this.accelfact = 1/scalefact;
+    this.name = carnames[this.carid];
+    this.img=loadImage("data/cars/"+this.name+"/"+this.name+".png");
     this.turnfact = 0;
     this.maxturnfact = 3.5;
     this.direction = 180;
     this.vel = createVector(0,0);
-    this.accelforce = 0;
-    this.maxspeed = 1/scalefact;
     this.speed = 0;
     this.friction = 0.95;
     this.turnaccel=0;
+    this.accelforce = 0;
     this.w = false;
     this.a = false;
     this.s = false;
     this.d = false;
+    this.accelfact = stats[this.carid][2];
+    this.maxspeed = stats[this.carid][3];
   }
   update(){
-     console.log(raceframes);
-     for(let i = 0;i<this.inps.length;i++){
+     for(let i = 1;i<this.inps.length;i++){
        if(split(this.inps[i],'`')[2]==raceframes){
+         if(i==this.inps.length-2){
+           this.finished = true;
+           yourplace++;
+         }
          if(split(this.inps[i],'`')[0]=='p'){
            if(split(this.inps[i],'`')[1]=='w'){
              this.w = true;
