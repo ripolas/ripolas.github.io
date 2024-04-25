@@ -1,15 +1,24 @@
 let songs;
-var video;
-var show_video = true;
+let video;
+let buttons = [];
+let button_size;
+let current_song_id = 1;
 function preload(){
   songs = loadJSON("/data.json");
 }
 function setup() {
   createCanvas(windowWidth,windowHeight);
-  console.log(songs[0]["genres"]);
-  let video_id = songs[0]["video_id"];
-  video = createDiv('<iframe width="420" height="345" src="https://www.youtube.com/embed/'+video_id+'?autoplay=1" frameborder="0" allowfullscreen></iframe>')
+  button_size = width/9;
+  for(let i = 0;i<9;i++){
+    buttons[i] = createButton(i+1);
+    buttons[i].position(i*button_size,height-button_size);
+    buttons[i].size(button_size,button_size);
+  }
+  console.log(songs[current_song_id]["genres"]);
+  let video_id = songs[current_song_id]["video_id"];
+  video = createDiv('<iframe width="'+width+'" height="'+(height-button_size)+'" src="https://www.youtube.com/embed/'+video_id+'?autoplay=1" frameborder="0" allowfullscreen></iframe>')
   video.position(0,0);
+  
 }
 
 
