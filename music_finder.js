@@ -10,7 +10,7 @@ function setup() {
   slider_size = width/9;
   console.log(songs[current_song_id]["genres"]);
   let video_id = songs[current_song_id]["video_id"];
-  video = createDiv('<iframe width="'+width+'" height="'+(height-slider_size)+'" src="https://www.youtube.com/embed/'+video_id+'?autoplay=1" frameborder="0" allowfullscreen></iframe>')
+  video = createDiv('<iframe width="'+width+'" height="'+(height-(25+25+25+25+25))+'" src="https://www.youtube.com/embed/'+video_id+'?autoplay=1" frameborder="0" allowfullscreen></iframe>')
   video.position(0,0);
   
 }
