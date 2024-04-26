@@ -23,13 +23,7 @@ function setup() {
   slider = document.getElementById("slider");
   slider_size = width/9;
   console.log(songs[current_song_id]["genres"]);
-  let video_id = songs[current_song_id]["video_id"];
-  if((height-125)>=width*9/16){
-    video = createDiv('<iframe width="'+width+'" height="'+(height-(25+25+25+25+25))+'" src="https://www.youtube.com/embed/'+video_id+'?autoplay=1" frameborder="0" allowfullscreen></iframe>')
-
-  }else if(width>=(height-125)*9/16){
-    video = createDiv('<iframe width="'+width+'" height="'+(height-(25+25+25+25+25))+'" src="https://www.youtube.com/embed/'+video_id+'?autoplay=1" frameborder="0" allowfullscreen></iframe>')
-  }
+  setup_video();
   video.position(0,0);
   findNextSong();
 }
@@ -119,9 +113,18 @@ function findNextSong(){
   console.log(score);
 }
 function next(){
-  
+  for(let i = 0;i<abs(slider.value-5);i++){
+    if(slider.value>5){
+      add_vote(1);
+    }else{
+      add_vote(-1);
+    }
+  }
+  current_song_id++;
+  slider.value = 5;
+  setup_video();
 }
-function add_vote(let amount){
+function add_vote(amount){
   let cbpm = songs[current_song_id]["bpm"];
   let cauthor = songs[current_song_id]["author"];
   let cyear = songs[current_song_id]["year"];
@@ -154,9 +157,36 @@ function add_vote(let amount){
     key_total_votes[ckey]++;
   }else{
     key_votes[ckey] = amount;
-    key_total_votes[ckey]++;
+    key_total_votes[ckey]=1;
   }
-  
+  for(let genre in cgenres){
+    if(genre in genre_votes){
+      genre_votes[genre]+=amount;
+      genre_total_votes[genre]++;
+    }else{
+      genre_votes[genre]=amount;
+      genre_total_votes[genre] = 1;
+    }
+  }
+  for(let chord in cchords){
+    if(chord in chord_votes){
+      chord_votes[chord]+=amount;
+      chord_total_votes[chord]++;
+    }else{
+      chord_votes[chord]=amount;
+      chord_total_votes[chord] = 1;
+    }
+  }
+}
+function setup_video(){
+  let video_id = songs[current_song_id]["video_id"];
+  if((height-125)>=width*9/16){
+    video = createDiv('<iframe width="'+width+'" height="'+(height-(25+25+25+25+25))+'" src="https://www.youtube.com/embed/'+video_id+'?autoplay=1" frameborder="0" allowfullscreen></iframe>');
+
+  }else if(width>=(height-125)*9/16){
+    video = createDiv('<iframe width="'+width+'" height="'+(height-(25+25+25+25+25))+'" src="https://www.youtube.com/embed/'+video_id+'?autoplay=1" frameborder="0" allowfullscreen></iframe>');
+  }
+  video.position(0,0);
 }
 document.addEventListener("DOMContentLoaded", function() {
   const button = document.getElementById("next");
