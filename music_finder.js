@@ -15,6 +15,9 @@ let genre_total_votes = {};
 let key_votes = {};
 let key_total_votes = {};
 let slider;
+let current_score = -1;
+let lower_bound = 0;
+let upper_bound = 0;
 function preload(){
   songs = loadJSON("/data.json");
 }
@@ -22,94 +25,22 @@ function setup() {
   createCanvas(windowWidth,windowHeight);
   slider = document.getElementById("slider");
   slider_size = width/9;
-  console.log(songs[current_song_id]["genres"]);
   setup_video();
-  findNextSong();
 }
 function draw() {
   background(0);
   fill(255);
+  textAlign(LEFT,CENTER);
   for(let i = 0; i < width;i++){
     text(i+1,i*(width-25)/8+12,height-25-8);
   }
+  textAlign(CENTER,CENTER);
+  text(lower_bound+"     :     "+current_score+"     :     "+upper_bound,width/2,height-50);
 }
 function findNextSong(){
-  let cbpm = songs[current_song_id]["bpm"];
-  let cauthor = songs[current_song_id]["author"];
-  let cyear = songs[current_song_id]["year"];
-  let ckey = songs[current_song_id]["key"];
-  let cchords = songs[current_song_id]["chords"];
-  let cgenres = songs[current_song_id]["genres"];
-  let score = 0;
-  let lower_bound = 0;
-  let upper_bound = 0;
-  if((int(cbpm/10)+'') in bpm_votes){
-    score += bpm_votes[int(cbpm/10)+'']/bpm_total_votes[int(cbpm/10)];
-    upper_bound += bpm_votes[int(cbpm/10)+'']/bpm_total_votes[int(cbpm/10)];
-    lower_bound += bpm_votes[int(cbpm/10)+'']/bpm_total_votes[int(cbpm/10)];
-  }else{
-    lower_bound -= 1;
-    upper_bound += 1;
-  }
-  if(cauthor in author_votes){
-    score += author_votes[cauthor]/author_total_votes[author];
-    upper_bound += author_votes[cauthor]/author_total_votes[author];
-    lower_bound += author_votes[cauthor]/author_total_votes[author];
-  }else{
-    lower_bound -= 1;
-    upper_bound += 1;
-  }
-  if(cyear in year_votes){
-    score += year_votes[cyear]/year_total_votes[cyear];
-    upper_bound += year_votes[cyear]/year_total_votes[cyear];
-    lower_bound += year_votes[cyear]/year_total_votes[cyear];
-  }else{
-    lower_bound -= 1;
-    upper_bound += 1;
-  }
-  if(ckey in key_votes){
-    score += key_votes[ckey]/key_total_votes[ckey]; 
-    upper_bound += key_votes[ckey]/key_total_votes[ckey]; 
-    lower_bound += key_votes[ckey]/key_total_votes[ckey]; 
-  }else{
-    lower_bound -= 1;
-    upper_bound += 1;
-  }
-  let genre_score = 0;
-  let genre_amount = 0; //how many were sumed up
-  let total_genres = songs[current_song_id]["genres"].length;
-  for(let i in cgenres){
-    if(i in genre_votes){
-      genre_score += genre_votes[i]/genre_total_votes[i];
-      upper_bound += genre_votes[i]/genre_total_votes[i]/total_genres;
-      lower_bound += genre_votes[i]/genre_total_votes[i]/total_genres;
-      genre_amount++;
-    }else{
-      lower_bound -= 1/total_genres;
-      upper_bound += 1/total_genres;
-    }
-  }
-  if(genre_amount>0){
-    score += genre_score/genre_amount;
-  }
-  let chord_score = 0;
-  let chord_amount = 0; //how many were sumed up
-  let total_chords = songs[current_song_id]["chords"].length;
-  for(let i in cchords){
-    if(i in chord_votes){
-      chord_score += chord_votes[i]/chord_total_votes[i];
-      upper_bound += chord_votes[i]/chord_total_votes[i]/total_chords;
-      lower_bound += chord_votes[i]/chord_total_votes[i]/total_chords;
-      chord_amount++;
-    }else{
-      lower_bound -= 1/total_chords;
-      upper_bound += 1/total_chords;
-    }
-  }
-  if(chord_amount>0){
-    score += chord_score/chord_amount;
-  }
-  console.log(score);
+  current_song_id++;
+  current_score = isGood();
+  console.log(current_score);
 }
 function add_vote(amount){
   let cbpm = songs[current_song_id]["bpm"];
@@ -164,8 +95,9 @@ function add_vote(amount){
       chord_total_votes[chord] = 1;
     }
   }
+  
 }
-function next(){
+function next(){ 
   for(let i = 0;i<abs(slider.value-5);i++){
     if(slider.value>5){
       add_vote(1);
@@ -173,31 +105,102 @@ function next(){
       add_vote(-1);
     }
   }
-  current_song_id++;
+  findNextSong();
   slider.value = 5;
   setup_video();
 }
 let current_video;
-
 function setup_video(){
   let video_id = songs[current_song_id]["video_id"];
   let iframeSrc = 'https://www.youtube.com/embed/' + video_id + '?autoplay=1';
-
-  // If there's a previous video, remove it or stop its source
   if (current_video) {
-    current_video.remove(); // Remove the previous iframe
-    // Alternatively, you can stop the video by setting its src to an empty string
-    // current_video.src = '';
+    current_video.remove();
   }
-
-  // Create the new video iframe
   let videoDiv = createDiv('<iframe width="'+width+'" height="'+(height-(25+25+25+25+25))+'" src="' + iframeSrc + '" frameborder="0" allowfullscreen></iframe>');
   videoDiv.position(0,0);
-
-  // Set the current_video to the new iframe
-  current_video = videoDiv.elt; // Save the reference to the iframe element
+  current_video = videoDiv.elt;
 }
 document.addEventListener("DOMContentLoaded", function() {
   const button = document.getElementById("next");
   button.addEventListener("click", next);
 });
+function isGood(){
+  lower_bound = 0;
+  upper_bound = 0;
+  let cbpm = songs[current_song_id]["bpm"];
+  let cauthor = songs[current_song_id]["author"];
+  let cyear = songs[current_song_id]["year"];
+  let ckey = songs[current_song_id]["key"];
+  let cchords = songs[current_song_id]["chords"];
+  let cgenres = songs[current_song_id]["genres"];
+  let score = 0;
+  console.log("BPM: "+bpm_votes[int(cbpm/10)]+" "+cbpm+" "+current_song_id);
+  console.log(bpm_votes);
+  if((int(cbpm/10)+'') in bpm_votes){
+    score += bpm_votes[int(cbpm/10)+'']/bpm_total_votes[int(cbpm/10)];
+    upper_bound += bpm_votes[int(cbpm/10)+'']/bpm_total_votes[int(cbpm/10)];
+    lower_bound += bpm_votes[int(cbpm/10)+'']/bpm_total_votes[int(cbpm/10)];
+  }else{
+    lower_bound -= 1;
+    upper_bound += 1;
+  }
+  if(cauthor in author_votes){
+    score += author_votes[cauthor]/author_total_votes[cauthor];
+    upper_bound += author_votes[cauthor]/author_total_votes[cauthor];
+    lower_bound += author_votes[cauthor]/author_total_votes[cauthor];
+  }else{
+    lower_bound -= 1;
+    upper_bound += 1;
+  }
+  if(cyear in year_votes){
+    score += year_votes[cyear]/year_total_votes[cyear];
+    upper_bound += year_votes[cyear]/year_total_votes[cyear];
+    lower_bound += year_votes[cyear]/year_total_votes[cyear];
+  }else{
+    lower_bound -= 1;
+    upper_bound += 1;
+  }
+  if(ckey in key_votes){
+    score += key_votes[ckey]/key_total_votes[ckey]; 
+    upper_bound += key_votes[ckey]/key_total_votes[ckey]; 
+    lower_bound += key_votes[ckey]/key_total_votes[ckey]; 
+  }else{
+    lower_bound -= 1;
+    upper_bound += 1;
+  }
+  let genre_score = 0;
+  let genre_amount = 0; //how many were sumed up
+  let total_genres = songs[current_song_id]["genres"].length;
+  for(let i in cgenres){
+    if(i in genre_votes){
+      genre_score += genre_votes[i]/genre_total_votes[i];
+      upper_bound += genre_votes[i]/genre_total_votes[i]/total_genres;
+      lower_bound += genre_votes[i]/genre_total_votes[i]/total_genres;
+      genre_amount++;
+    }else{
+      lower_bound -= 1/total_genres;
+      upper_bound += 1/total_genres;
+    }
+  }
+  if(genre_amount>0){
+    score += genre_score/genre_amount;
+  }
+  let chord_score = 0;
+  let chord_amount = 0; //how many were sumed up
+  let total_chords = songs[current_song_id]["chords"].length;
+  for(let i in cchords){
+    if(i in chord_votes){
+      chord_score += chord_votes[i]/chord_total_votes[i];
+      upper_bound += chord_votes[i]/chord_total_votes[i]/total_chords;
+      lower_bound += chord_votes[i]/chord_total_votes[i]/total_chords;
+      chord_amount++;
+    }else{
+      lower_bound -= 1/total_chords;
+      upper_bound += 1/total_chords;
+    }
+  }
+  if(chord_amount>0){
+    score += chord_score/chord_amount;
+  }
+  return score;
+}
