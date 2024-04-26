@@ -122,6 +122,7 @@ function next(){
   }
   current_song_id++;
   slider.value = 5;
+  stopVideo();
   setup_video();
 }
 function add_vote(amount){
@@ -192,3 +193,14 @@ document.addEventListener("DOMContentLoaded", function() {
   const button = document.getElementById("next");
   button.addEventListener("click", next);
 });
+var stopVideo = function ( element ) {
+  var iframe = element.querySelector( 'iframe');
+  var video = element.querySelector( 'video' );
+  if ( iframe ) {
+    var iframeSrc = iframe.src;
+    iframe.src = iframeSrc;
+  }
+  if ( video ) {
+    video.pause();
+  }
+};
