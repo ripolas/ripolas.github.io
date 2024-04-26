@@ -175,7 +175,6 @@ function next(){
   }
   current_song_id++;
   slider.value = 5;
-  stopVideo();
   setup_video();
 }
 let current_video;
