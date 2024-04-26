@@ -193,14 +193,9 @@ document.addEventListener("DOMContentLoaded", function() {
   const button = document.getElementById("next");
   button.addEventListener("click", next);
 });
-var stopVideo = function ( element ) {
-  var iframe = element.querySelector( 'iframe');
-  var video = element.querySelector( 'video' );
-  if ( iframe ) {
-    var iframeSrc = iframe.src;
-    iframe.src = iframeSrc;
+function stopVideo() {
+  let videoFrame = document.getElementById('video_frame');
+  if (videoFrame != null) {
+    videoFrame.src = '';
   }
-  if ( video ) {
-    video.pause();
-  }
-};
+}
