@@ -24,7 +24,6 @@ function setup() {
   slider_size = width/9;
   console.log(songs[current_song_id]["genres"]);
   setup_video();
-  video.position(0,0);
   findNextSong();
 }
 function draw() {
@@ -112,19 +111,6 @@ function findNextSong(){
   }
   console.log(score);
 }
-function next(){
-  for(let i = 0;i<abs(slider.value-5);i++){
-    if(slider.value>5){
-      add_vote(1);
-    }else{
-      add_vote(-1);
-    }
-  }
-  current_song_id++;
-  slider.value = 5;
-  stopVideo();
-  setup_video();
-}
 function add_vote(amount){
   let cbpm = songs[current_song_id]["bpm"];
   let cauthor = songs[current_song_id]["author"];
@@ -179,23 +165,40 @@ function add_vote(amount){
     }
   }
 }
+function next(){
+  for(let i = 0;i<abs(slider.value-5);i++){
+    if(slider.value>5){
+      add_vote(1);
+    }else{
+      add_vote(-1);
+    }
+  }
+  current_song_id++;
+  slider.value = 5;
+  stopVideo();
+  setup_video();
+}
+let current_video;
+
 function setup_video(){
   let video_id = songs[current_song_id]["video_id"];
-  if((height-125)>=width*9/16){
-    video = createDiv('<iframe width="'+width+'" height="'+(height-(25+25+25+25+25))+'" src="https://www.youtube.com/embed/'+video_id+'?autoplay=1" frameborder="0" allowfullscreen></iframe>');
+  let iframeSrc = 'https://www.youtube.com/embed/' + video_id + '?autoplay=1';
 
-  }else if(width>=(height-125)*9/16){
-    video = createDiv('<iframe width="'+width+'" height="'+(height-(25+25+25+25+25))+'" src="https://www.youtube.com/embed/'+video_id+'?autoplay=1" frameborder="0" allowfullscreen></iframe>');
+  // If there's a previous video, remove it or stop its source
+  if (current_video) {
+    current_video.remove(); // Remove the previous iframe
+    // Alternatively, you can stop the video by setting its src to an empty string
+    // current_video.src = '';
   }
-  video.position(0,0);
+
+  // Create the new video iframe
+  let videoDiv = createDiv('<iframe width="'+width+'" height="'+(height-(25+25+25+25+25))+'" src="' + iframeSrc + '" frameborder="0" allowfullscreen></iframe>');
+  videoDiv.position(0,0);
+
+  // Set the current_video to the new iframe
+  current_video = videoDiv.elt; // Save the reference to the iframe element
 }
 document.addEventListener("DOMContentLoaded", function() {
   const button = document.getElementById("next");
   button.addEventListener("click", next);
 });
-function stopVideo() {
-  let videoFrame = document.getElementById('video_frame');
-  if (videoFrame != null) {
-    videoFrame.src = '';
-  }
-}
