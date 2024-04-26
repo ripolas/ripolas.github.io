@@ -234,7 +234,7 @@ function isGood() {
   let chord_score = 0;
   let chord_amount = 0; //how many were sumed up
   let total_chords = songs[current_song_id]["chords"].length;
-  if (cchords!+=undefined) {
+  if (cchords!==undefined) {
     for (let i in cchords) {
       if (i in chord_votes) {
         chord_score += chord_votes[i]/chord_total_votes[i];
