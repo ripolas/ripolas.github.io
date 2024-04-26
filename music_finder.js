@@ -43,23 +43,24 @@ function findNextSong() {
   console.log(current_score);
 }
 function add_vote(amount) {
+  let cbpm, cauthor, cyear, ckey, cchords, cgenres;
   if ("bpm" in songs[current_song_id]) {
-    let cbpm = songs[current_song_id]["bpm"];
+    cbpm = songs[current_song_id]["bpm"];
   }
   if ("author" in songs[current_song_id]) {
-    let cauthor = songs[current_song_id]["author"];
+    cauthor = songs[current_song_id]["author"];
   }
   if ("year" in songs[current_song_id]) {
-    let cyear = songs[current_song_id]["year"];
+    cyear = songs[current_song_id]["year"];
   }
   if ("key" in songs[current_song_id]) {
-    let ckey = songs[current_song_id]["key"];
+    ckey = songs[current_song_id]["key"];
   }
   if ("chords" in songs[current_song_id]) {
-    let cchords = songs[current_song_id]["chords"];
+    cchords = songs[current_song_id]["chords"];
   }
   if ("genres" in songs[current_song_id]) {
-    let cgenres = songs[current_song_id]["genres"];
+    cgenres = songs[current_song_id]["genres"];
   }
   if (cbpm!==undefined) {
     if (int(cbpm/10) in bpm_votes) {
@@ -151,23 +152,24 @@ document.addEventListener("DOMContentLoaded", function() {
 function isGood() {
   lower_bound = 0;
   upper_bound = 0;
+  let cbpm, cauthor, cyear, ckey, cchords, cgenres;
   if ("bpm" in songs[current_song_id]) {
-    let cbpm = songs[current_song_id]["bpm"];
+    cbpm = songs[current_song_id]["bpm"];
   }
   if ("author" in songs[current_song_id]) {
-    let cauthor = songs[current_song_id]["author"];
+    cauthor = songs[current_song_id]["author"];
   }
   if ("year" in songs[current_song_id]) {
-    let cyear = songs[current_song_id]["year"];
+    cyear = songs[current_song_id]["year"];
   }
   if ("key" in songs[current_song_id]) {
-    let ckey = songs[current_song_id]["key"];
+    ckey = songs[current_song_id]["key"];
   }
   if ("chords" in songs[current_song_id]) {
-    let cchords = songs[current_song_id]["chords"];
+    cchords = songs[current_song_id]["chords"];
   }
   if ("genres" in songs[current_song_id]) {
-    let cgenres = songs[current_song_id]["genres"];
+    cgenres = songs[current_song_id]["genres"];
   }
   let score = 0;
   console.log("BPM: "+bpm_votes[int(cbpm/10)]+" "+cbpm+" "+current_song_id);
