@@ -149,12 +149,12 @@ function setup_video() {
     current_video.remove();
   }
   let videoDiv;
-  if(width/16*9<=height-125){
+  if(width/16*9<=height-175){
     videoDiv = createDiv('<iframe width="'+width+'" height="'+width/16*9+'" src="' + iframeSrc + '" frameborder="0" allowfullscreen></iframe>');
     videoDiv.position(0, 0);
   }else{
-    videoDiv = createDiv('<iframe width="'+(height-125)/9*16+'" height="'+(height-125)+'" src="' + iframeSrc + '" frameborder="0" allowfullscreen></iframe>');
-    videoDiv.position((width-(height-125)/9*16)/2, 0);
+    videoDiv = createDiv('<iframe width="'+(height-175)/9*16+'" height="'+(height-175)+'" src="' + iframeSrc + '" frameborder="0" allowfullscreen></iframe>');
+    videoDiv.position((width-(height-175)/9*16)/2, 50);
   }
   current_video = videoDiv.elt;
 }
