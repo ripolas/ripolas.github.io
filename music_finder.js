@@ -20,7 +20,7 @@ let lower_bound = 0;
 let upper_bound = 0;
 let songs_rated = 0;
 function preload() {
-  songs = loadJSON("/data.json");
+  songs = loadJSON("/new_data.json");
 }
 function setup() {
   createCanvas(windowWidth, windowHeight);
