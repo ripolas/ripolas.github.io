@@ -18,6 +18,7 @@ let slider;
 let current_score = -1;
 let lower_bound = 0;
 let upper_bound = 0;
+let songs_rated = 0;
 function preload() {
   songs = loadJSON("/data.json");
 }
@@ -40,6 +41,10 @@ function draw() {
 function findNextSong() {
   current_song_id++;
   current_score = isGood();
+  while(current_score<0){
+    current_song_id++;
+    current_score = isGood();
+  }
   console.log(current_score);
 }
 function add_vote(amount) {
@@ -129,6 +134,9 @@ function next() {
       add_vote(-1);
     }
   }
+  if(slider.value!=5){
+    songs_rated++;
+  }
   findNextSong();
   slider.value = 5;
   setup_video();
@@ -140,8 +148,14 @@ function setup_video() {
   if (current_video) {
     current_video.remove();
   }
-  let videoDiv = createDiv('<iframe width="'+width+'" height="'+(height-(25+25+25+25+25))+'" src="' + iframeSrc + '" frameborder="0" allowfullscreen></iframe>');
-  videoDiv.position(0, 0);
+  let videoDiv;
+  if(width/16*9<=height-125){
+    videoDiv = createDiv('<iframe width="'+width+'" height="'+width/16*9+'" src="' + iframeSrc + '" frameborder="0" allowfullscreen></iframe>');
+    videoDiv.position(0, 0);
+  }else{
+    videoDiv = createDiv('<iframe width="'+(height-125)/9*16+'" height="'+(height-125)+'" src="' + iframeSrc + '" frameborder="0" allowfullscreen></iframe>');
+    videoDiv.position((width-(height-125)/9*16)/2, 0);
+  }
   current_video = videoDiv.elt;
 }
 document.addEventListener("DOMContentLoaded", function() {
