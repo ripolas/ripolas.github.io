@@ -3,10 +3,21 @@ body {
   margin: 0;
   overflow: hidden;
 }
-button{
+button[id=next]{
   position:absolute;
   bottom:50px;
   right:0px;
+  height:50px;
+  width:100px;
+  background-color: #000000;
+  color: white;
+  border: 2px solid #008150;
+  transition: 0.1s;
+}
+button[id=nuke]{
+  position:absolute;
+  bottom:50px;
+  left:0px;
   height:50px;
   width:100px;
   background-color: #000000;

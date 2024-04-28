@@ -19,6 +19,8 @@ let current_score = -1;
 let lower_bound = 0;
 let upper_bound = 0;
 let songs_rated = 0;
+let average = 0;
+let average_counted = 0;
 function preload() {
   songs = loadJSON("/new_data.json");
 }
@@ -39,11 +41,14 @@ function draw() {
     text(i+1, i*(width-25)/8+12, height-25-8);
   }
   textAlign(CENTER, CENTER);
-  text(lower_bound+"     :     "+current_score+"     :     "+upper_bound, width/2, height-50);
+  text(average/average_counted,width/2,height-75);
+  text(lower_bound.toFixed(3)+"     :     "+current_score.toFixed(3)+"     :     "+upper_bound.toFixed(3), width/2, height-50);
 }
 function findNextSong() {
   current_song_id++;
   current_score = isGood();
+  average+=current_score;
+  average_counted++;
   while(current_score<0){
     current_song_id++;
     current_score = isGood();
@@ -165,8 +170,31 @@ function setup_video() {
 document.addEventListener("DOMContentLoaded", function() {
   const button = document.getElementById("next");
   button.addEventListener("click", next);
+});
+document.addEventListener("DOMContentLoaded", function() {
+  const button = document.getElementById("nuke");
+  button.addEventListener("click", nuke);
+});
+function nuke(){
+  bpm_votes = {};
+  bpm_total_votes = {};
+  author_votes = {};
+  author_total_votes = {};
+  year_votes = {};
+  year_total_votes = {};
+  key_votes = {};
+  key_total_votes = {};
+  chord_votes = {};
+  chord_total_votes = {};
+  genre_votes = {};
+  genre_total_votes = {};
+  average = 0;
+  average_counted = 0;
+  current_song_id = 0;
+  saveToLocal();
+  setup_video();
+  current_score = isGood();
 }
-);
 function isGood() {
   lower_bound = 0;
   upper_bound = 0;
@@ -286,7 +314,9 @@ function saveToLocal(){
     chord_total_votes: chord_total_votes,
     genre_votes: genre_votes,
     genre_total_votes: genre_total_votes,
-    current_song_id:(current_song_id+1)
+    current_song_id:(current_song_id+1),
+    average:average,
+    average_counted:average_counted
   };
   localStorage.setItem('combinedData', JSON.stringify(combinedData));
 }
@@ -306,6 +336,8 @@ function loadFromLocal(){
   genre_votes = combinedData.genre_votes;
   genre_total_votes = combinedData.genre_total_votes;
   current_song_id = combinedData.current_song_id;
+  average = combinedData.average;
+  average_counted = combinedData.average_counted;
   current_score = isGood();
   console.log("LOADED",current_song_id);
 }
