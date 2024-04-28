@@ -197,6 +197,7 @@ function nuke() {
   current_song_id = 0;
   setup_video();
   current_score = isGood();
+  toggleSettings();
 }
 function isGood() {
   lower_bound = 0;
