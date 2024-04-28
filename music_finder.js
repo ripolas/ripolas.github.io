@@ -134,7 +134,14 @@ function add_vote(amount) {
     }
   }
 }
+var clickcount = 0;
 function next() {
+  clickCount++;
+  gtag('event', 'button_click', {
+      'event_category': 'Button Clicks',
+      'event_label': 'My Button',
+      'value': clickCount
+  });
   for (let i = 0; i<abs(slider.value-5); i++) {
     if (slider.value>5) {
       add_vote(1);
