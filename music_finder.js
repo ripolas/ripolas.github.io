@@ -362,8 +362,8 @@ function loadFromLocal() {
 function toggleSettings() {
   var settingsBar = document.getElementById("settingsBar");
   if (settingsBar.style.right === "0px") {
-    settingsBar.style.right = "-150px"; // Hide the bar
+    settingsBar.style.right = "-150px";
   } else {
-    settingsBar.style.right = "0px"; // Show the bar
+    settingsBar.style.right = "0px";
   }
 }
