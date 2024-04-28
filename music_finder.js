@@ -136,11 +136,11 @@ function add_vote(amount) {
 }
 var clickcount = 0;
 function next() {
-  clickCount++;
+  clickcount++;
   gtag('event', 'button_click', {
       'event_category': 'Button Clicks',
       'event_label': 'My Button',
-      'value': clickCount
+      'value': clickcount
   });
   for (let i = 0; i<abs(slider.value-5); i++) {
     if (slider.value>5) {
