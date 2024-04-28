@@ -26,6 +26,9 @@ function setup() {
   createCanvas(windowWidth, windowHeight);
   slider = document.getElementById("slider");
   slider_size = width/9;
+  if (localStorage.getItem('combinedData') !== null) {
+    loadFromLocal();
+  }
   setup_video();
 }
 function draw() {
@@ -134,6 +137,7 @@ function next() {
       add_vote(-1);
     }
   }
+  saveToLocal();
   if(slider.value!=5){
     songs_rated++;
   }
@@ -267,4 +271,41 @@ function isGood() {
     }
   }
   return score;
+}
+function saveToLocal(){
+  let combinedData = {
+    bpm_votes: bpm_votes,
+    bpm_total_votes: bpm_total_votes,
+    author_votes: author_votes,
+    author_total_votes: author_total_votes,
+    year_votes: year_votes,
+    year_total_votes: year_total_votes,
+    key_votes: key_votes,
+    key_total_votes: key_total_votes,
+    chord_votes: chord_votes,
+    chord_total_votes: chord_total_votes,
+    genre_votes: genre_votes,
+    genre_total_votes: genre_total_votes,
+    current_song_id:(current_song_id+1)
+  };
+  localStorage.setItem('combinedData', JSON.stringify(combinedData));
+}
+function loadFromLocal(){
+  let combinedDataJsonString = localStorage.getItem('combinedData');
+  let combinedData = JSON.parse(combinedDataJsonString);
+  bpm_votes = combinedData.bpm_votes;
+  bpm_total_votes = combinedData.bpm_total_votes;
+  author_votes = combinedData.author_votes;
+  author_total_votes = combinedData.author_total_votes;
+  year_votes = combinedData.year_votes;
+  year_total_votes = combinedData.year_total_votes;
+  key_votes = combinedData.key_votes;
+  key_total_votes = combinedData.key_total_votes;
+  chord_votes = combinedData.chord_votes;
+  chord_total_votes = combinedData.chord_total_votes;
+  genre_votes = combinedData.genre_votes;
+  genre_total_votes = combinedData.genre_total_votes;
+  current_song_id = combinedData.current_song_id;
+  current_score = isGood();
+  console.log("LOADED",current_song_id);
 }
