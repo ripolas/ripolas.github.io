@@ -41,7 +41,7 @@ function draw() {
     text(i+1, i*(width-25)/8+12, height-25-8);
   }
   textAlign(CENTER, CENTER);
-  text(average/average_counted,width/2,height-75);
+  text(current_score - average/average_counted, width/2, height-75);
   text(lower_bound.toFixed(3)+"     :     "+current_score.toFixed(3)+"     :     "+upper_bound.toFixed(3), width/2, height-50);
 }
 function findNextSong() {
@@ -49,7 +49,7 @@ function findNextSong() {
   current_score = isGood();
   average+=current_score;
   average_counted++;
-  while(current_score<0){
+  while (current_score<0) {
     current_song_id++;
     current_score = isGood();
   }
@@ -143,7 +143,7 @@ function next() {
     }
   }
   saveToLocal();
-  if(slider.value!=5){
+  if (slider.value!=5) {
     songs_rated++;
   }
   findNextSong();
@@ -158,10 +158,10 @@ function setup_video() {
     current_video.remove();
   }
   let videoDiv;
-  if(width/16*9<=height-175){
+  if (width/16*9<=height-175) {
     videoDiv = createDiv('<iframe width="'+width+'" height="'+width/16*9+'" src="' + iframeSrc + '" frameborder="0" allowfullscreen></iframe>');
     videoDiv.position(0, 0);
-  }else{
+  } else {
     videoDiv = createDiv('<iframe width="'+(height-175)/9*16+'" height="'+(height-175)+'" src="' + iframeSrc + '" frameborder="0" allowfullscreen></iframe>');
     videoDiv.position((width-(height-175)/9*16)/2, 50);
   }
@@ -170,12 +170,14 @@ function setup_video() {
 document.addEventListener("DOMContentLoaded", function() {
   const button = document.getElementById("next");
   button.addEventListener("click", next);
-});
+}
+);
 document.addEventListener("DOMContentLoaded", function() {
   const button = document.getElementById("nuke");
   button.addEventListener("click", nuke);
-});
-function nuke(){
+}
+);
+function nuke() {
   bpm_votes = {};
   bpm_total_votes = {};
   author_votes = {};
@@ -301,27 +303,42 @@ function isGood() {
   }
   return score;
 }
-function saveToLocal(){
+function saveToLocal() {
   let combinedData = {
-    bpm_votes: bpm_votes,
-    bpm_total_votes: bpm_total_votes,
-    author_votes: author_votes,
-    author_total_votes: author_total_votes,
-    year_votes: year_votes,
-    year_total_votes: year_total_votes,
-    key_votes: key_votes,
-    key_total_votes: key_total_votes,
-    chord_votes: chord_votes,
-    chord_total_votes: chord_total_votes,
-    genre_votes: genre_votes,
-    genre_total_votes: genre_total_votes,
-    current_song_id:(current_song_id+1),
-    average:average,
-    average_counted:average_counted
+    bpm_votes:
+    bpm_votes,
+    bpm_total_votes:
+    bpm_total_votes,
+    author_votes:
+    author_votes,
+    author_total_votes:
+    author_total_votes,
+    year_votes:
+    year_votes,
+    year_total_votes:
+    year_total_votes,
+    key_votes:
+    key_votes,
+    key_total_votes:
+    key_total_votes,
+    chord_votes:
+    chord_votes,
+    chord_total_votes:
+    chord_total_votes,
+    genre_votes:
+    genre_votes,
+    genre_total_votes:
+    genre_total_votes,
+    current_song_id:
+    (current_song_id+1),
+    average:
+    average,
+    average_counted:
+    average_counted
   };
   localStorage.setItem('combinedData', JSON.stringify(combinedData));
 }
-function loadFromLocal(){
+function loadFromLocal() {
   let combinedDataJsonString = localStorage.getItem('combinedData');
   let combinedData = JSON.parse(combinedDataJsonString);
   bpm_votes = combinedData.bpm_votes;
@@ -340,5 +357,13 @@ function loadFromLocal(){
   average = combinedData.average;
   average_counted = combinedData.average_counted;
   current_score = isGood();
-  console.log("LOADED",current_song_id);
+  console.log("LOADED", current_song_id);
+}
+function toggleSettings() {
+  var settingsBar = document.getElementById("settingsBar");
+  if (settingsBar.style.right === "0px") {
+    settingsBar.style.right = "-150px"; // Hide the bar
+  } else {
+    settingsBar.style.right = "0px"; // Show the bar
+  }
 }
