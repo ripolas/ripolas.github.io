@@ -190,8 +190,9 @@ function nuke(){
   genre_total_votes = {};
   average = 0;
   average_counted = 0;
-  current_song_id = 0;
+  current_song_id = -1;
   saveToLocal();
+  current_song_id = 0;
   setup_video();
   current_score = isGood();
 }
