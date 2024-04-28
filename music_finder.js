@@ -41,7 +41,9 @@ function draw() {
     text(i+1, i*(width-25)/8+12, height-25-8);
   }
   textAlign(CENTER, CENTER);
-  text(current_score - average/average_counted+' %', width/2, height-75);
+  if(average_counted>0){
+    text(current_score - average/average_counted+' %', width/2, height-75);
+  }
   text(lower_bound.toFixed(3)+"     :     "+current_score.toFixed(3)+"     :     "+upper_bound.toFixed(3), width/2, height-50);
 }
 function findNextSong() {
