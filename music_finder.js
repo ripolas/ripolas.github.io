@@ -208,7 +208,6 @@ function nuke() {
   change_video();
   setup_video();
   current_score = isGood();
-  toggleSettings();
   saveToLocal();
 }
 function isGood() {
