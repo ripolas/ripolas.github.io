@@ -32,6 +32,7 @@ function setup() {
   if (localStorage.getItem('combinedData') !== null) {
     loadFromLocal();
   }
+  change_video();
   setup_video();
 }
 function draw() {
@@ -152,22 +153,32 @@ function next() {
   }
   findNextSong();
   slider.value = 5;
+  change_video();
   setup_video();
   saveToLocal();
 }
 let current_video;
-function setup_video() {
+let videoDiv;
+function change_video(){
   let video_id = songs[current_song_id]["video_id"];
   let iframeSrc = 'https://www.youtube.com/embed/' + video_id + '?autoplay=1';
   if (current_video) {
     current_video.remove();
   }
-  let videoDiv;
   if (((width)/16*9)<=height-125) {
-    videoDiv = createDiv('<iframe width="'+(width)+'" height="'+(width)/16*9+'" src="' + iframeSrc + '" frameborder="0" allowfullscreen></iframe>');
+    videoDiv = createDiv('<iframe id="iframe" width="'+(width)+'" height="'+(width)/16*9+'" src="' + iframeSrc + '" frameborder="0" allowfullscreen></iframe>');
+  }else{
+    videoDiv = createDiv('<iframe id="iframe" width="'+(height-125)/9*16+'" height="'+(height-125)+'" src="' + iframeSrc + '" frameborder="0" allowfullscreen></iframe>');
+  }
+}
+function setup_video() {
+  if (((width)/16*9)<=height-125) {
+    window.parent.document.getElementById('iframe').width = width+'px';
+    window.parent.document.getElementById('iframe').height = (width)/16*9+'px';
     videoDiv.position(0, 0);
   } else {
-    videoDiv = createDiv('<iframe width="'+(height-125)/9*16+'" height="'+(height-125)+'" src="' + iframeSrc + '" frameborder="0" allowfullscreen></iframe>');
+    window.parent.document.getElementById('iframe').width = (height-125)/9*16+'px';
+    window.parent.document.getElementById('iframe').height = (height-125)+'px';
     videoDiv.position(((width)-(height-125)/9*16)/2, 0);
   }
   current_video = videoDiv.elt;
@@ -194,6 +205,7 @@ function nuke() {
   average_counted = 0;
   current_song_id = -1;
   current_song_id = 0;
+  change_video();
   setup_video();
   current_score = isGood();
   toggleSettings();
