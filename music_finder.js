@@ -21,6 +21,7 @@ let upper_bound = 0;
 let songs_rated = 0;
 let average = 0;
 let average_counted = 0;
+
 function preload() {
   songs = loadJSON("/new_data.json");
 }
@@ -139,11 +140,6 @@ function add_vote(amount) {
 var clickcount = 0;
 function next() {
   clickcount++;
-  gtag('event', 'button_click', {
-      'event_category': 'Button Clicks',
-      'event_label': 'My Button',
-      'value': clickcount
-  });
   for (let i = 0; i<abs(slider.value-5); i++) {
     if (slider.value>5) {
       add_vote(1);
@@ -151,13 +147,13 @@ function next() {
       add_vote(-1);
     }
   }
-  saveToLocal();
   if (slider.value!=5) {
     songs_rated++;
   }
   findNextSong();
   slider.value = 5;
   setup_video();
+  saveToLocal();
 }
 let current_video;
 function setup_video() {
@@ -167,23 +163,18 @@ function setup_video() {
     current_video.remove();
   }
   let videoDiv;
-  if (width/16*9<=height-175) {
-    videoDiv = createDiv('<iframe width="'+width+'" height="'+width/16*9+'" src="' + iframeSrc + '" frameborder="0" allowfullscreen></iframe>');
+  if (((width)/16*9)<=height-125) {
+    videoDiv = createDiv('<iframe width="'+(width)+'" height="'+(width)/16*9+'" src="' + iframeSrc + '" frameborder="0" allowfullscreen></iframe>');
     videoDiv.position(0, 0);
   } else {
-    videoDiv = createDiv('<iframe width="'+(height-175)/9*16+'" height="'+(height-175)+'" src="' + iframeSrc + '" frameborder="0" allowfullscreen></iframe>');
-    videoDiv.position((width-(height-175)/9*16)/2, 50);
+    videoDiv = createDiv('<iframe width="'+(height-125)/9*16+'" height="'+(height-125)+'" src="' + iframeSrc + '" frameborder="0" allowfullscreen></iframe>');
+    videoDiv.position(((width)-(height-125)/9*16)/2, 0);
   }
   current_video = videoDiv.elt;
 }
 document.addEventListener("DOMContentLoaded", function() {
   const button = document.getElementById("next");
   button.addEventListener("click", next);
-}
-);
-document.addEventListener("DOMContentLoaded", function() {
-  const button = document.getElementById("nuke");
-  button.addEventListener("click", nuke);
 }
 );
 function nuke() {
@@ -202,11 +193,11 @@ function nuke() {
   average = 0;
   average_counted = 0;
   current_song_id = -1;
-  saveToLocal();
   current_song_id = 0;
   setup_video();
   current_score = isGood();
   toggleSettings();
+  saveToLocal();
 }
 function isGood() {
   lower_bound = 0;
@@ -315,36 +306,21 @@ function isGood() {
 }
 function saveToLocal() {
   let combinedData = {
-    bpm_votes:
-    bpm_votes,
-    bpm_total_votes:
-    bpm_total_votes,
-    author_votes:
-    author_votes,
-    author_total_votes:
-    author_total_votes,
-    year_votes:
-    year_votes,
-    year_total_votes:
-    year_total_votes,
-    key_votes:
-    key_votes,
-    key_total_votes:
-    key_total_votes,
-    chord_votes:
-    chord_votes,
-    chord_total_votes:
-    chord_total_votes,
-    genre_votes:
-    genre_votes,
-    genre_total_votes:
-    genre_total_votes,
-    current_song_id:
-    (current_song_id+1),
-    average:
-    average,
-    average_counted:
-    average_counted
+    bpm_votes: bpm_votes,
+    bpm_total_votes: bpm_total_votes,
+    author_votes: author_votes,
+    author_total_votes: author_total_votes,
+    year_votes: year_votes,
+    year_total_votes: year_total_votes,
+    key_votes: key_votes,
+    key_total_votes: key_total_votes,
+    chord_votes: chord_votes,
+    chord_total_votes: chord_total_votes,
+    genre_votes: genre_votes,
+    genre_total_votes: genre_total_votes,
+    current_song_id: current_song_id,
+    average: average,
+    average_counted: average_counted
   };
   localStorage.setItem('combinedData', JSON.stringify(combinedData));
 }
@@ -369,11 +345,7 @@ function loadFromLocal() {
   current_score = isGood();
   console.log("LOADED", current_song_id);
 }
-function toggleSettings() {
-  var settingsBar = document.getElementById("settingsBar");
-  if (settingsBar.style.right === "0px") {
-    settingsBar.style.right = "-150px";
-  } else {
-    settingsBar.style.right = "0px";
-  }
-}
+function windowResized() { 
+  resizeCanvas(windowWidth, windowHeight); 
+  setup_video();
+} 
