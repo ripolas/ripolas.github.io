@@ -6,7 +6,7 @@ body {
 button[id=next]{
   position:absolute;
   cursor:pointer;
-  bottom:50px;
+  bottom:66px;
   right:0px;
   height:50px;
   width:100px;
@@ -28,7 +28,7 @@ button[id=next]:hover{
   bottom:0;
   -webkit-appearance: none;
   width: 100%;
-  height: 25px;
+  height: 50px;
   background: #d3d3d3;
   -webkit-transition: .2s;
   transition: .2s;
@@ -41,7 +41,7 @@ button[id=next]:hover{
   -webkit-appearance: none;
   appearance: none;
   width: 25px;
-  height: 25px;
+  height: 50px;
   background: #04AA6D;
   cursor: pointer;
 }
