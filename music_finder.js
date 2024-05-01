@@ -165,9 +165,9 @@ function change_video(){
     current_video.remove();
   }
   if (((width)/16*9)<=height-150) {
-    videoDiv = createDiv('<iframe id="iframe" width="'+(width)+'?autoplay=1" height="'+(width)/16*9+'" src="' + iframeSrc + '" frameborder="0" allow=\'autoplay\'></iframe>');
+    videoDiv = createDiv('<iframe id="iframe" width="'+(width)+'" height="'+(width)/16*9+'" src="' + iframeSrc + '" frameborder="0" allow=\'autoplay\'></iframe>');
   }else{
-    videoDiv = createDiv('<iframe id="iframe" width="'+(height-150)/9*16+'?autoplay=1" height="'+(height-150)+'" src="' + iframeSrc + '" frameborder="0" allow=\'autoplay\'></iframe>');
+    videoDiv = createDiv('<iframe id="iframe" width="'+(height-150)/9*16+'" height="'+(height-150)+'" src="' + iframeSrc + '" frameborder="0" allow=\'autoplay\'></iframe>');
   }
 }
 function setup_video() {
