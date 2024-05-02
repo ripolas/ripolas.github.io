@@ -160,7 +160,7 @@ let videoDiv;
 function change_video(){
   let video_id = songs[current_song_id]["video_id"];
   console.log(songs[current_song_id],video_id);
-  let iframeSrc = 'https://www.youtube.com/embed/' + video_id + '?autoplay=1';
+  let iframeSrc = 'https://www.youtube.com/embed/' + video_id + '&rel=0?autoplay=1';
   if (current_video) {
     current_video.remove();
   }
