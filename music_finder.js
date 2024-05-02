@@ -353,7 +353,6 @@ function loadFromLocal() {
   average = combinedData.average;
   average_counted = combinedData.average_counted;
   current_score = isGood();
-  console.log("LOADED", current_song_id);
 }
 function windowResized() { 
   resizeCanvas(windowWidth, windowHeight); 
