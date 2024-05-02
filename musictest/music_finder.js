@@ -160,7 +160,7 @@ let videoDiv;
 function change_video(){
   let video_id = songs[current_song_id]["video_id"];
   console.log(songs[current_song_id],video_id);
-  let iframeSrc = 'https://www.youtube.com/embed/'+video_id+'?rel=0&showinfo=0&modestbranding=1&autoplay=1&controls=1';
+  let iframeSrc = 'https://www.youtube-nocookie.com/embed/'+video_id+'?rel=0&showinfo=0&modestbranding=1&autoplay=1&controls=1';
   if (current_video) {
     current_video.remove();
   }
@@ -169,16 +169,6 @@ function change_video(){
   }else{
     videoDiv = createDiv('<iframe id="iframe" width="'+(height-150)/9*16+'" height="'+(height-150)+'" src="' + iframeSrc + '" frameborder="0" allow=\'autoplay\'></iframe>');
   }
-  videoDiv.child().elt.addEventListener('pause', function() {
-    // When paused, hide the suggestions
-    videoDiv.child().elt.src += '&disablekb=1';
-  });
-  
-  // Listen for the video being played
-  videoDiv.child().elt.addEventListener('play', function() {
-    // When played, show the suggestions
-    videoDiv.child().elt.src = iframeSrc;
-  });
 }
 function setup_video() {
   if (((width)/16*9)<=height-150) {
