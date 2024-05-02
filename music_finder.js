@@ -21,7 +21,6 @@ let upper_bound = 0;
 let songs_rated = 0;
 let average = 0;
 let average_counted = 0;
-
 function preload() {
   songs = loadJSON("/new_data.json");
 }
