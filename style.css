@@ -3,45 +3,33 @@ body {
   margin: 0;
   overflow: hidden;
 }
-button[id=next]{
-  position:absolute;
-  cursor:pointer;
-  bottom:66px;
-  right:0px;
-  height:50px;
-  width:100px;
-  background-color: #000000;
+
+h1 {
+  text-align: center;
+}
+
+
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #333;
+}
+
+li {
+  float: left;
+}
+
+li a {
+  display: block;
   color: white;
-  border: 2px solid #008150;
-  transition: 0.1s;
-}
-button[id=next]:hover{
-  background-color: #242424;
-  border: 4px solid #00FF9F;
-}
-.slidecontainer {
-  width: 100%;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
 }
 
-.slider {
-  position: absolute;
-  bottom:0;
-  -webkit-appearance: none;
-  width: 100%;
-  height: 50px;
-  background: #d3d3d3;
-  -webkit-transition: .2s;
-  transition: .2s;
-}
-
-.slider:hover {
-  background: #FFFFFF;
-}
-.slider::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  appearance: none;
-  width: 25px;
-  height: 50px;
-  background: #04AA6D;
-  cursor: pointer;
+/* Change the link color to #111 (black) on hover */
+li a:hover {
+  background-color: #111;
 }

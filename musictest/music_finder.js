@@ -59,7 +59,6 @@ function findNextSong() {
 }
 function add_vote(amount) {
   let cbpm, cauthor, cyear, ckey, cchords, cgenres;
-  console.log(songs,current_song_id,songs[current_song_id]);
   if ("bpm" in songs[current_song_id]) {
     cbpm = songs[current_song_id]["bpm"];
   }
