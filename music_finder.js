@@ -35,6 +35,7 @@ function setup() {
   setup_video();
 }
 function draw() {
+
   background(0);
   fill(255);
   textAlign(LEFT, CENTER);
@@ -160,6 +161,7 @@ let current_video;
 let videoDiv;
 function change_video(){
   let video_id = songs[current_song_id]["video_id"];
+  console.log("VIDEO ID: "+video_id);
   let iframeSrc = 'https://www.youtube.com/embed/' + video_id + '?autoplay=1';
   if (current_video) {
     current_video.remove();
