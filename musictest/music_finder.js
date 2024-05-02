@@ -160,14 +160,14 @@ let videoDiv;
 function change_video(){
   let video_id = songs[current_song_id]["video_id"];
   console.log(songs[current_song_id],video_id);
-  let iframeSrc = 'https://www.youtube.com/embed/' + video_id + '?rel=0?autoplay=1';
+  let iframeSrc = 'https://www.youtube.com/embed/' + video_id + '?rel=0&showinfo=0&modestbranding=1&autoplay=1';
   if (current_video) {
     current_video.remove();
   }
   if (((width)/16*9)<=height-150) {
-    videoDiv = createDiv('<iframe id="iframe" width="'+(width)+'" height="'+(width)/16*9+'" src="' + iframeSrc + '" frameborder="0" allow=\'autoplay\' rel="0" controls="0" modestbranding="1"></iframe>');
+    videoDiv = createDiv('<iframe id="iframe" width="'+(width)+'" height="'+(width)/16*9+'" src="' + iframeSrc + '" frameborder="0" allow=\'autoplay\'></iframe>');
   }else{
-    videoDiv = createDiv('<iframe id="iframe" width="'+(height-150)/9*16+'" height="'+(height-150)+'" src="' + iframeSrc + '" frameborder="0" allow=\'autoplay\' rel="0" controls="0" modestbranding="1"></iframe>');
+    videoDiv = createDiv('<iframe id="iframe" width="'+(height-150)/9*16+'" height="'+(height-150)+'" src="' + iframeSrc + '" frameborder="0" allow=\'autoplay\'></iframe>');
   }
 }
 function setup_video() {
