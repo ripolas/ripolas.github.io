@@ -39,11 +39,11 @@ function draw() {
   fill(255);
   textAlign(LEFT, CENTER);
   for (let i = 0; i < width; i++) {
-    text(i+1, i*(width-25)/8+12, height-50-8);
+    text(i+1, i*(width-25)/8+12, height-50-8-46);
   }
   textAlign(CENTER, CENTER);
   if(average_counted>0){
-    text(current_score - average/average_counted+' %', width/2, height-75);
+    text(map(current_score - average/average_counted,-3,3,0,100)+'%', width/2, height-75-46);
   }
 }
 function findNextSong() {
@@ -160,25 +160,25 @@ let videoDiv;
 function change_video(){
   let video_id = songs[current_song_id]["video_id"];
   console.log(songs[current_song_id],video_id);
-  let iframeSrc = 'https://www.youtube-nocookie.com/embed/'+video_id+'?rel=0&showinfo=0&modestbranding=1&autoplay=1&controls=1';
+  let iframeSrc = 'https://www.youtube.com/embed/'+video_id+'?rel=0&showinfo=0&modestbranding=1&autoplay=1&controls=1';
   if (current_video) {
     current_video.remove();
   }
-  if (((width)/16*9)<=height-150) {
+  if (((width)/16*9)<=height-150-46) {
     videoDiv = createDiv('<iframe id="iframe" width="'+(width)+'" height="'+(width)/16*9+'" src="' + iframeSrc + '" frameborder="0" allow=\'autoplay\'></iframe>');
   }else{
-    videoDiv = createDiv('<iframe id="iframe" width="'+(height-150)/9*16+'" height="'+(height-150)+'" src="' + iframeSrc + '" frameborder="0" allow=\'autoplay\'></iframe>');
+    videoDiv = createDiv('<iframe id="iframe" width="'+(height-150-46)/9*16+'" height="'+(height-150-46)+'" src="' + iframeSrc + '" frameborder="0" allow=\'autoplay\'></iframe>');
   }
 }
 function setup_video() {
-  if (((width)/16*9)<=height-150) {
+  if (((width)/16*9)<=height-150-46) {
     window.parent.document.getElementById('iframe').width = width+'px';
     window.parent.document.getElementById('iframe').height = (width)/16*9+'px';
-    videoDiv.position(0, 0);
+    videoDiv.position(0, 46);
   } else {
-    window.parent.document.getElementById('iframe').width = (height-150)/9*16+'px';
-    window.parent.document.getElementById('iframe').height = (height-150)+'px';
-    videoDiv.position(((width)-(height-150)/9*16)/2, 0);
+    window.parent.document.getElementById('iframe').width = (height-150-46)/9*16+'px';
+    window.parent.document.getElementById('iframe').height = (height-150-46)+'px';
+    videoDiv.position(((width)-(height-150-50)/9*16)/2, 46);
   }
   current_video = videoDiv.elt;
 }
