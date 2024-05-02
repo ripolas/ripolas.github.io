@@ -169,6 +169,16 @@ function change_video(){
   }else{
     videoDiv = createDiv('<iframe id="iframe" width="'+(height-150)/9*16+'" height="'+(height-150)+'" src="' + iframeSrc + '" frameborder="0" allow=\'autoplay\'></iframe>');
   }
+  videoDiv.child().elt.addEventListener('pause', function() {
+    // When paused, hide the suggestions
+    videoDiv.child().elt.src += '&disablekb=1';
+  });
+  
+  // Listen for the video being played
+  videoDiv.child().elt.addEventListener('play', function() {
+    // When played, show the suggestions
+    videoDiv.child().elt.src = iframeSrc;
+  });
 }
 function setup_video() {
   if (((width)/16*9)<=height-150) {
