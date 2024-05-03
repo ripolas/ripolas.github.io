@@ -1,14 +1,8 @@
 body {
   padding: 0;
   margin: 0;
-  overflow: hidden;
   background-color: #212121;
   font-family:roboto;
-}
-
-h1 {
-  color: #ffffff;
-  text-align: center;
 }
 
 
@@ -33,4 +27,45 @@ li a {
 }
 li a:hover {
   background-color: #111;
+}
+header {
+  padding: 20px;
+  text-align: center;
+}
+
+main {
+  padding: 20px;
+}
+
+section {
+  margin-bottom: 30px;
+}
+
+h1,
+h2,
+h3,
+p {
+  color: #fff;
+}
+
+h1 {
+  font-size: 36px;
+  margin: 10px 0;
+}
+
+h2 {
+  font-size: 24px;
+  margin: 10px 0;
+}
+
+h3 {
+  font-size: 20px;
+  margin: 10px 0;
+}
+
+p {
+  padding-left: 20px;
+  padding-right: 20px;
+  font-size: 16px;
+  line-height: 1.6;
 }
