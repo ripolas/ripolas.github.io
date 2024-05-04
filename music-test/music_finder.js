@@ -1,3 +1,7 @@
+/*
+https://seositecheckup.com/seo-audit/ripolas.duckdns.org
+*/
+
 let songs;
 let video;
 let current_song_id = 0;
