@@ -25,6 +25,7 @@ let upper_bound = 0;
 let songs_rated = 0;
 let average = 0;
 let average_counted = 0;
+let picking_out = false;
 function preload() {
   songs = loadJSON("/new_data.json");
 }
@@ -59,7 +60,24 @@ function findNextSong() {
     current_song_id++;
     current_score = isGood();
   }
+  if(picking_out){
+    while(map(current_score - average/average_counted,-3,3,0,100)<75){
+      current_song_id++;
+      current_score = isGood();
+      average+=current_score;
+      average_counted++;
+      while (current_score<0) {
+        current_song_id++;
+        current_score = isGood();
+      }
+    }
+  }
   console.log(current_score);
+}
+function keyPressed(){
+  if(key==' '){
+    picking_out=!picking_out;
+  }
 }
 function add_vote(amount) {
   let cbpm, cauthor, cyear, ckey, cchords, cgenres;
@@ -140,9 +158,7 @@ function add_vote(amount) {
     }
   }
 }
-var clickcount = 0;
 function next() {
-  clickcount++;
   for (let i = 0; i<abs(slider.value-5); i++) {
     if (slider.value>5) {
       add_vote(1);

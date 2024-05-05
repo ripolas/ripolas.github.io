@@ -1,6 +1,7 @@
 body {
   padding: 0;
   margin: 0;
+  font-family: Arial, sans-serif;
   overflow: hidden;
 }
 button[id=next]{
@@ -52,7 +53,12 @@ ul {
   overflow: hidden;
   background-color: #333;
 }
-
+h1{
+  font-size:36px;
+}
+h3 {
+  font-size: 24px;
+}
 li {
   float: left;
 }
@@ -64,7 +70,6 @@ li a {
   padding: 14px 16px;
   text-decoration: none;
 }
-
 li a:hover {
   background-color: #111;
 }

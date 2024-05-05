@@ -13,7 +13,11 @@ ul {
   padding: 0;
   overflow: hidden;
   background-color: #333;
+  position: fixed;
+  top: 0;
+  width: 100%;
 }
+
 
 li {
   float: left;
@@ -41,27 +45,40 @@ main {
 section {
   margin-bottom: 30px;
 }
-
-
-
-h1 {
-  font-size: 36px;
-  margin: 10px 0;
+h1{
+  margin-top: 80px;
+  margin-bottom: 10px;
+  font-weight: bold;
+  font-size:36px;
+  line-height:0;
 }
-
-h2 {
-  font-size: 24px;
-  margin: 10px 0;
-}
-
 h3 {
-  font-size: 20px;
-  margin: 10px 0;
+  font-weight: bold;
+  font-size: 28px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  padding-left: 64px;
+  padding-right: 64px;
 }
 
 p {
-  padding-left: 20px;
-  padding-right: 20px;
-  font-size: 16px;
+  font-size: 18px;
+  padding-left:86px;
+  padding-right: 86px;
   line-height: 1.6;
+  margin-bottom: 90px;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0);
+}
+::-webkit-scrollbar-thumb {
+  border-radius: 5px;
+  background: #fff; 
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #fff; 
 }
