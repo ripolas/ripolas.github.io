@@ -21,18 +21,30 @@ ul {
 
 li {
   float: left;
+  margin-right: 10px;
 }
 
 li a {
+  
   display: block;
   color: white;
   text-align: center;
-  padding: 14px 16px;
+  height:50px;
+  line-height: 50px;
   text-decoration: none;
 }
 li a:hover {
-  background-color: #111;
+  opacity: 0.5;
 }
+.home {
+  width: 127px;
+  height: 50px;
+  background-image: url('/logo.png');
+  background-repeat: no-repeat;
+  background-position: center; /* Adjust as needed */
+  background-size: cover;
+}
+
 header {
   padding: 20px;
   text-align: center;
