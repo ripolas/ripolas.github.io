@@ -60,19 +60,19 @@ section {
 h1{
   margin-top: 80px;
   margin-bottom: 10px;
-  font-weight: bold;
-  font-size:1.5cm;
+  font-weight: 700;
+  font-size:7vh;
 }
 h2 {
   font-weight: bold;
-  font-size: 1.1cm;
+  font-size: 5vh;
   margin-top: 10px;
   margin-bottom: 10px;
   padding-left: 0%;
   padding-right: 0%;
 }
 p {
-  font-size: 0.75cm;
+  font-size: 3vh;
   padding-left:2%;
   padding-right: 2%;
   line-height: 1.6;
