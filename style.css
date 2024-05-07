@@ -3,7 +3,7 @@ body {
   margin: 0;
   background-color: #212121;
   color: #ffffff;
-  font-family:roboto;
+  font-family: 'Roboto';
 }
 
 
@@ -46,6 +46,7 @@ li a:hover {
 }
 
 header {
+  font-family: 'Roboto';
   padding: 20px;
   text-align: center;
 }
@@ -97,18 +98,20 @@ p {
   border: 0px;
   outline: 0px;
   background: #328754;
-  padding: 64px 64px;
-  font-size: 3.3vw;
-  font-weight: 500;
+  padding-top:25px;
+  padding-bottom:25px;
+  font-size: 25px;
+  font-weight: 600;
   text-decoration: none;
   text-align: center;
-  line-height: 110%;
-  margin: 0 auto;
+  margin: 50px auto;
   border-radius: 4px;
-  width: 22vw;
-  height: 5.5vw;
-  line-height: 5.5vw;
+  width: auto;
+  max-height: 100px;
+  max-width: 320px;
+  line-height: 110%;
 }
 .start:hover{
+  transition: all .3s ease-in-out;
   background: #276941;
 }
