@@ -1,7 +1,3 @@
-/*
-https://seositecheckup.com/seo-audit/ripolas.duckdns.org
-*/
-
 let songs;
 let video;
 let current_song_id = 0;
@@ -44,11 +40,11 @@ function draw() {
   fill(255);
   textAlign(LEFT, CENTER);
   for (let i = 0; i < width; i++) {
-    text(i+1, i*(width-25)/8+12, height-50-8-46);
+    //text(i+1, i*(width-25)/8+12, height-50-8-46);
   }
   textAlign(CENTER, CENTER);
   if(average_counted>0){
-    text(map(current_score - average/average_counted,-3,3,0,100)+'%', width/2, height-75-46);
+    //text(map(current_score - average/average_counted,-3,3,0,100)+'%', width/2, height-75-46);
   }
 }
 function findNextSong() {
@@ -194,11 +190,11 @@ function setup_video() {
   if (((width)/16*9)<=height-150-46) {
     window.parent.document.getElementById('iframe').width = width+'px';
     window.parent.document.getElementById('iframe').height = (width)/16*9+'px';
-    videoDiv.position(0, 46);
+    videoDiv.position(0, 50);
   } else {
     window.parent.document.getElementById('iframe').width = (height-150-46)/9*16+'px';
     window.parent.document.getElementById('iframe').height = (height-150-46)+'px';
-    videoDiv.position(((width)-(height-150-50)/9*16)/2, 46);
+    videoDiv.position(((width)-(height-150-50)/9*16)/2, 50);
   }
   current_video = videoDiv.elt;
 }

@@ -41,7 +41,7 @@ li a:hover {
   height: 50px;
   background-image: url('/logo.png');
   background-repeat: no-repeat;
-  background-position: center; /* Adjust as needed */
+  background-position: center; 
   background-size: cover;
 }
 

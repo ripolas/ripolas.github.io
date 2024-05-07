@@ -1,8 +1,10 @@
 body {
   padding: 0;
   margin: 0;
-  font-family: Arial, sans-serif;
-  overflow: hidden;
+  background-color: #212121;
+  overflow:hidden;
+  color: #ffffff;
+  font-family: 'Roboto';
 }
 button[id=next]{
   position:absolute;
@@ -46,30 +48,48 @@ button[id=next]:hover{
   background: #04AA6D;
   cursor: pointer;
 }
-ul {
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-  overflow: hidden;
-  background-color: #333;
-}
 h1{
   font-size:36px;
 }
 h2 {
   font-size: 24px;
 }
+
+
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #333;
+  position: fixed;
+  top: 0;
+  width: 100%;
+}
+
+
 li {
   float: left;
+  margin-right: 10px;
 }
 
 li a {
+  
   display: block;
   color: white;
   text-align: center;
-  padding: 14px 16px;
+  height:50px;
+  line-height: 50px;
   text-decoration: none;
 }
 li a:hover {
-  background-color: #111;
+  opacity: 0.5;
+}
+.home {
+  width: 127px;
+  height: 50px;
+  background-image: url('/logo.png');
+  background-repeat: no-repeat;
+  background-position: center; 
+  background-size: cover;
 }
