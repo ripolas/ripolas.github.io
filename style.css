@@ -111,6 +111,25 @@ p {
   max-width: 320px;
   line-height: 110%;
 }
+.privacy{
+  display: block;
+  color: #fff;
+  border: 0px;
+  outline: 0px;
+  background: #328754;
+  padding-top:10px;
+  padding-bottom:10px;
+  font-size: 10px;
+  font-weight: 600;
+  text-decoration: none;
+  text-align: center;
+  margin: 25px auto;
+  border-radius: 4px;
+  width: auto;
+  max-height: 50px;
+  max-width: 160px;
+  line-height: 110%;
+}
 .start:hover{
   transition: all .3s ease-in-out;
   background: #276941;
