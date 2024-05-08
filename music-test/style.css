@@ -2,59 +2,74 @@ body {
   padding: 0;
   margin: 0;
   background-color: #212121;
-  overflow:hidden;
+  overflow: hidden;
   color: #ffffff;
   font-family: 'Roboto';
 }
+
 button[id=next]{
-  position:absolute;
-  cursor:pointer;
-  bottom:66px;
-  right:0px;
-  height:50px;
-  width:100px;
+  position: absolute;
+  cursor: pointer;
+  bottom: 66px;
+  right: 0px;
+  height: 50px;
+  width: 100px;
   background-color: #000000;
   color: white;
   border: 2px solid #008150;
   transition: 0.1s;
 }
+
 button[id=next]:hover{
   background-color: #242424;
   border: 4px solid #00FF9F;
 }
-.slidecontainer {
-  width: 100%;
-}
-
 .slider {
   position: absolute;
-  bottom:0;
+  bottom: 0;
   -webkit-appearance: none;
   width: 100%;
   height: 50px;
-  background: #d3d3d3;
+  background: linear-gradient(to right, var(--thumb-color, #CCCC00) 0%, var(--thumb-color, #CCCC00) var(--thumb-percent, 50%), transparent var(--thumb-percent, 50%), transparent 100%);
   -webkit-transition: .2s;
   transition: .2s;
 }
 
-.slider:hover {
-  background: #FFFFFF;
-}
 .slider::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
   width: 25px;
   height: 50px;
-  background: #04AA6D;
   cursor: pointer;
+  background-color: var(--thumb-color, #CCCC00); /* Set the background color to match the thumb color */
+  border: 2px solid transparent; /* Add a border to the thumb */
 }
+
+.slider::-moz-range-thumb { 
+  -moz-appearance: none;
+  appearance: none;
+  width: 25px;
+  height: 50px;
+  cursor: pointer;
+  background-color: var(--thumb-color, #CCCC00); /* Set the background color to match the thumb color */
+  border: 2px solid transparent; /* Add a border to the thumb */
+}
+
+
+
+
+
+.slider::-moz-focus-outer { 
+  border: 0;
+}
+
 h1{
   font-size:36px;
 }
+
 h2 {
   font-size: 24px;
 }
-
 
 ul {
   list-style-type: none;
@@ -67,24 +82,24 @@ ul {
   width: 100%;
 }
 
-
 li {
   float: left;
   margin-right: 10px;
 }
 
 li a {
-  
   display: block;
   color: white;
   text-align: center;
-  height:50px;
+  height: 50px;
   line-height: 50px;
   text-decoration: none;
 }
+
 li a:hover {
   opacity: 0.5;
 }
+
 .home {
   width: 127px;
   height: 50px;

@@ -14,7 +14,7 @@ let genre_votes = {};
 let genre_total_votes = {};
 let key_votes = {};
 let key_total_votes = {};
-let slider;
+let slider = document.getElementById("slider");
 let current_score = -1;
 let lower_bound = 0;
 let upper_bound = 0;
@@ -27,13 +27,14 @@ function preload() {
 }
 function setup() {
   createCanvas(windowWidth, windowHeight);
-  slider = document.getElementById("slider");
   slider_size = width/9;
   if (localStorage.getItem('combinedData') !== null) {
     loadFromLocal();
   }
   change_video();
   setup_video();
+  console.log(Object.keys(songs).length);
+  fix_slider();
 }
 function draw() {
   background(0);
@@ -167,6 +168,7 @@ function next() {
   }
   findNextSong();
   slider.value = 5;
+  fix_slider();
   change_video();
   setup_video();
   saveToLocal();
@@ -374,3 +376,17 @@ function windowResized() {
   resizeCanvas(windowWidth, windowHeight); 
   setup_video();
 } 
+function fix_slider(){
+  const value = (slider.value - slider.min) / (slider.max - slider.min);
+  const thumbColor = `hsl(${(value) * 120}, 100%, 40%)`;
+  const thumbPercent = `${value * 100}%`; // Calculate the thumb position as a percentage
+  slider.style.setProperty('--thumb-percent', thumbPercent);
+  slider.style.setProperty('--thumb-color', thumbColor);
+}
+slider.addEventListener('input', function() {
+    const value = (slider.value - slider.min) / (slider.max - slider.min);
+    const thumbColor = `hsl(${(value) * 120}, 100%, 40%)`;
+    const thumbPercent = `${value * 100}%`; // Calculate the thumb position as a percentage
+    slider.style.setProperty('--thumb-percent', thumbPercent);
+    slider.style.setProperty('--thumb-color', thumbColor);
+});
