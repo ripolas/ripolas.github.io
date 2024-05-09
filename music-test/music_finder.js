@@ -72,24 +72,14 @@ function draw() {
 function findNextSong() {
   current_song_id++;
   current_score = isGood();
-  average+=current_score;
-  average_counted++;
-  while (current_score<0) {
-    current_song_id++;
-    current_score = isGood();
-  }
   if(picking_out){
     while(map(current_score - average/average_counted,-6,6,0,100)<65){
       current_song_id++;
       current_score = isGood();
-      average+=current_score;
-      average_counted++;
-      while (current_score<0) {
-        current_song_id++;
-        current_score = isGood();
-      }
     }
   }
+  average+=current_score;
+  average_counted++;
   console.log(current_score);
 }
 function keyPressed(){
