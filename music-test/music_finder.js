@@ -64,7 +64,7 @@ function draw() {
         }
       }
     }
-    text(sthing+' '+scr, width/2, height-75-46);
+    text(thing+' '+scr, width/2, height-75-46);
     
   }
 }
