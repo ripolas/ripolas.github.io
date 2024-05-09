@@ -55,7 +55,7 @@ function draw() {
           thing = 'You like the song a lot!';
         }
       }
-    }else if(scr<51){
+    }else if(scr<49){
       thing = 'You probably don\'t like the song';
       if(scr<40){
         thing = 'You do not like the song';
@@ -64,7 +64,7 @@ function draw() {
         }
       }
     }
-    text(thing+' '+scr+' '+average/average_counted, width/2, height-75-46);
+    text(thing+' '+scr+' '+average/average_counted+' '+(upper_bound-lower_bound), width/2, height-75-46);
     
   }
 }
