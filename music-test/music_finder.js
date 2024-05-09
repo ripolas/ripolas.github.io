@@ -48,23 +48,24 @@ function draw() {
     let thing = 'We are not sure about the songs likability.';
     let scr = map(current_score - average/average_counted,-6,6,0,100);
     if(scr>51){
-      scr = 'You probably like the song';
+      thing = 'You probably like the song';
       if(scr>60){
-        scr = 'You like the song';
+        thing = 'You like the song';
         if(scr>70){
-          scr = 'You like the song a lot!';
+          thing = 'You like the song a lot!';
         }
       }
     }else if(scr<51){
-      scr = 'You probably don\'t like the song';
+      thing = 'You probably don\'t like the song';
       if(scr<40){
-        scr = 'You do not like the song';
+        thing = 'You do not like the song';
         if(scr<30){
-          scr = 'You  hate the song';
+          thing = 'You  hate the song';
         }
       }
     }
-    text(scr, width/2, height-75-46);
+    text(sthing+' '+scr, width/2, height-75-46);
+    
   }
 }
 function findNextSong() {
