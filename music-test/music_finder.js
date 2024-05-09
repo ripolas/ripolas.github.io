@@ -44,8 +44,27 @@ function draw() {
     //text(i+1, i*(width-25)/8+12, height-50-8-46);
   }
   textAlign(CENTER, CENTER);
-  if(average_counted>0){
-    //text(map(current_score - average/average_counted,-3,3,0,100)+'%', width/2, height-75-46);
+  if(average_counted>5){
+    let thing = 'We are not sure about the songs likability.';
+    let scr = map(current_score - average/average_counted,-6,6,0,100);
+    if(scr>51){
+      scr = 'You probably like the song';
+      if(scr>60){
+        scr = 'You like the song';
+        if(scr>70){
+          scr = 'You like the song a lot!';
+        }
+      }
+    }else if(scr<51){
+      scr = 'You probably don\'t like the song';
+      if(scr<40){
+        scr = 'You do not like the song';
+        if(scr<30){
+          scr = 'You  hate the song';
+        }
+      }
+    }
+    text(scr, width/2, height-75-46);
   }
 }
 function findNextSong() {
