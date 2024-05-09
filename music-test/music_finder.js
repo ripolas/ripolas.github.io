@@ -64,7 +64,7 @@ function draw() {
         }
       }
     }
-    text(thing+' '+scr, width/2, height-75-46);
+    text(thing+' '+scr+' '+average/average_counted, width/2, height-75-46);
     
   }
 }
