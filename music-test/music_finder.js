@@ -79,7 +79,7 @@ function findNextSong() {
     current_score = isGood();
   }
   if(picking_out){
-    while(map(current_score - average/average_counted,-6,6,0,100)<75){
+    while(map(current_score - average/average_counted,-6,6,0,100)<65){
       current_song_id++;
       current_score = isGood();
       average+=current_score;
@@ -351,7 +351,7 @@ function isGood() {
       score += chord_score/chord_amount;
     }
   }
-  return score;
+  return (lower_bound+upper_bound)/2;
 }
 function saveToLocal() {
   let combinedData = {
