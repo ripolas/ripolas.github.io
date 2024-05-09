@@ -31,6 +31,7 @@ function setup() {
   if (localStorage.getItem('combinedData') !== null) {
     loadFromLocal();
   }
+  curreent_song_id=0;
   change_video();
   setup_video();
   console.log(Object.keys(songs).length);
@@ -78,7 +79,7 @@ function findNextSong() {
     current_score = isGood();
   }
   if(picking_out){
-    while(map(current_score - average/average_counted,-3,3,0,100)<75){
+    while(map(current_score - average/average_counted,-6,6,0,100)<75){
       current_song_id++;
       current_score = isGood();
       average+=current_score;
