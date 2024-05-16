@@ -45,6 +45,9 @@ function draw() {
     //text(i+1, i*(width-25)/8+12, height-50-8-46);
   }
   textAlign(CENTER, CENTER);
+  if(average_counted==0){
+    text("Please drag the slider to rate the song, then click next.", width/2, height-75-46);
+  }
   if(average_counted>5){
     let thing = 'We are not sure about the songs likability.';
     let scr = map(current_score - average/average_counted,-6,6,0,100);
@@ -65,8 +68,7 @@ function draw() {
         }
       }
     }
-    text(thing+' '+scr+' '+average/average_counted+' '+(upper_bound-lower_bound), width/2, height-75-46);
-    
+    text(thing, width/2, height-75-46);
   }
 }
 function findNextSong() {
