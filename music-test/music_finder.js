@@ -22,6 +22,7 @@ let songs_rated = 0;
 let average = 0;
 let average_counted = 0;
 let picking_out = false;
+let test_finished = false;
 function preload() {
   songs = loadJSON("/new_data.json");
 }
@@ -41,11 +42,8 @@ function draw() {
   background(0);
   fill(255);
   textAlign(LEFT, CENTER);
-  for (let i = 0; i < width; i++) {
-    //text(i+1, i*(width-25)/8+12, height-50-8-46);
-  }
   textAlign(CENTER, CENTER);
-  if(average_counted==0){
+  if(average_counted<=5){
     text("Please drag the slider to rate the song, then click next.", width/2, height-75-46);
   }
   if(average_counted>5){
@@ -70,8 +68,18 @@ function draw() {
     }
     text(thing, width/2, height-75-46);
   }
+  fill(255);
+  textSize(25);
+  textAlign(LEFT,TOP);
+  text((current_song_id+1)+'/'+10,0,50);
 }
 function findNextSong() {
+  if(current_song_id>=9&&!test_finished){
+    test_finished = true;
+    current_song_id = 0;
+    findNextSong();
+    return;
+  }
   current_song_id++;
   current_score = isGood();
   if(picking_out){
@@ -392,14 +400,14 @@ function windowResized() {
 function fix_slider(){
   const value = (slider.value - slider.min) / (slider.max - slider.min);
   const thumbColor = `hsl(${(value) * 120}, 100%, 40%)`;
-  const thumbPercent = `${value * 100}%`; // Calculate the thumb position as a percentage
+  const thumbPercent = `${value * 100}%`;
   slider.style.setProperty('--thumb-percent', thumbPercent);
   slider.style.setProperty('--thumb-color', thumbColor);
 }
 slider.addEventListener('input', function() {
     const value = (slider.value - slider.min) / (slider.max - slider.min);
     const thumbColor = `hsl(${(value) * 120}, 100%, 40%)`;
-    const thumbPercent = `${value * 100}%`; // Calculate the thumb position as a percentage
+    const thumbPercent = `${value * 100}%`;
     slider.style.setProperty('--thumb-percent', thumbPercent);
     slider.style.setProperty('--thumb-color', thumbColor);
 });
