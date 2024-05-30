@@ -76,6 +76,7 @@ function draw() {
 function findNextSong() {
   if(current_song_id>=9&&!test_finished){
     test_finished = true;
+    picking_out = true;
     current_song_id = 0;
     findNextSong();
     return;
@@ -83,7 +84,7 @@ function findNextSong() {
   current_song_id++;
   current_score = isGood();
   if(picking_out){
-    while(map(current_score - average/average_counted,-6,6,0,100)<65){
+    while(map(current_score - average/average_counted,-6,6,0,100)<50){
       current_song_id++;
       current_score = isGood();
     }
