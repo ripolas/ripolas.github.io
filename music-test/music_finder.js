@@ -83,6 +83,7 @@ function findNextSong() {
   }
   current_song_id++;
   current_score = isGood();
+  
   if(picking_out){
     while(map(current_score - average/average_counted,-6,6,0,100)<50){
       current_song_id++;
