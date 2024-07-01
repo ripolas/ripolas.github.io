@@ -40,14 +40,15 @@ function setup() {
   fix_slider();
 }
 function draw() {
+  setup_video();
   background(0);
   fill(255);
   textAlign(LEFT, CENTER);
   textAlign(CENTER, CENTER);
-  if(average_counted<=test_size){
+  if(average_counted<test_size){
     text("Please drag the slider to rate the song, then click next.", width/2, height-75-46);
   }
-  if(average_counted>test_size){
+  if(average_counted>=test_size){
     test_finished=true;
     text("You have completed the test!",width/2,height-75-46);
   }
@@ -60,19 +61,8 @@ function findNextSong() {
   if(!test_finished){
     current_song_id++;
     current_score = isGood();
-    if(picking_out){
-      while(map(current_score - average/average_counted,-6,6,0,100)<50){
-        current_song_id++;
-        current_score = isGood();
-      }
-    }
     average+=current_score;
     average_counted++;
-  }
-}
-function keyPressed(){
-  if(key==' '){
-    picking_out=!picking_out;
   }
 }
 function add_vote(amount) {
@@ -162,9 +152,6 @@ function next() {
       add_vote(-1);
     }
   }
-  if (slider.value!=5) {
-    songs_rated++;
-  }
   findNextSong();
   slider.value = 5;
   fix_slider();
@@ -188,14 +175,12 @@ function change_video(){
   }
 }
 function setup_video() {
-  if (((width)/16*9)<=height-150-46) {
-    window.parent.document.getElementById('iframe').width = width+'px';
-    window.parent.document.getElementById('iframe').height = (width)/16*9+'px';
-    videoDiv.position(0, 50);
-  } else {
-    window.parent.document.getElementById('iframe').width = (height-150-46)/9*16+'px';
-    window.parent.document.getElementById('iframe').height = (height-150-46)+'px';
-    videoDiv.position(((width)-(height-150-50)/9*16)/2, 50);
+  window.parent.document.getElementById('iframe').width = (width-textWidth((current_song_id+1)+'/'+test_size))+'px';
+  window.parent.document.getElementById('iframe').height = (width)/16*9+'px';
+  videoDiv.position(textWidth((current_song_id+1)+'/'+test_size), 50);
+  if((width)/16*9>=height-194){
+    window.parent.document.getElementById('iframe').height = (height-194)+'px';
+    window.parent.document.getElementById('iframe').width = (height-194)/9*16+'px';
   }
   current_video = videoDiv.elt;
 }

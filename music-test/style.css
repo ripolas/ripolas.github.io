@@ -10,7 +10,7 @@ body {
 button[id=next]{
   position: absolute;
   cursor: pointer;
-  bottom: 66px;
+  bottom: 52px;
   right: 0px;
   height: 50px;
   width: 100px;
