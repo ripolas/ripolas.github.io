@@ -23,6 +23,7 @@ let average = 0;
 let average_counted = 0;
 let picking_out = false;
 let test_finished = false;
+let test_size = 10;
 function preload() {
   songs = loadJSON("/new_data.json");
 }
@@ -32,7 +33,7 @@ function setup() {
   if (localStorage.getItem('combinedData') !== null) {
     loadFromLocal();
   }
-  curreent_song_id=0;
+  current_song_id=0;
   change_video();
   setup_video();
   console.log(Object.keys(songs).length);
@@ -43,35 +44,16 @@ function draw() {
   fill(255);
   textAlign(LEFT, CENTER);
   textAlign(CENTER, CENTER);
-  if(average_counted<=5){
+  if(average_counted<=test_size){
     text("Please drag the slider to rate the song, then click next.", width/2, height-75-46);
   }
-  if(average_counted>5){
-    let thing = 'We are not sure about the songs likability.';
-    let scr = map(current_score - average/average_counted,-6,6,0,100);
-    if(scr>51){
-      thing = 'You probably like the song';
-      if(scr>60){
-        thing = 'You like the song';
-        if(scr>70){
-          thing = 'You like the song a lot!';
-        }
-      }
-    }else if(scr<49){
-      thing = 'You probably don\'t like the song';
-      if(scr<40){
-        thing = 'You do not like the song';
-        if(scr<30){
-          thing = 'You  hate the song';
-        }
-      }
-    }
-    text(thing, width/2, height-75-46);
+  if(average_counted>test_size){
+    text("You have completed the test!",width/2,height-75-46);
   }
   fill(255);
   textSize(25);
   textAlign(LEFT,TOP);
-  text((current_song_id+1)+'/'+10,0,50);
+  text((current_song_id+1)+'/'+test_size,0,50);
 }
 function findNextSong() {
   if(current_song_id>=9&&!test_finished){
@@ -83,7 +65,6 @@ function findNextSong() {
   }
   current_song_id++;
   current_score = isGood();
-  
   if(picking_out){
     while(map(current_score - average/average_counted,-6,6,0,100)<50){
       current_song_id++;
