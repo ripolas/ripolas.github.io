@@ -30,10 +30,10 @@ function preload() {
 function setup() {
   createCanvas(windowWidth, windowHeight);
   slider_size = width/9;
+  current_song_id=0;
   if (localStorage.getItem('combinedData') !== null) {
     loadFromLocal();
   }
-  current_song_id=0;
   change_video();
   setup_video();
   console.log(Object.keys(songs).length);
@@ -48,6 +48,7 @@ function draw() {
     text("Please drag the slider to rate the song, then click next.", width/2, height-75-46);
   }
   if(average_counted>test_size){
+    test_finished=true;
     text("You have completed the test!",width/2,height-75-46);
   }
   fill(255);
@@ -56,24 +57,18 @@ function draw() {
   text((current_song_id+1)+'/'+test_size,0,50);
 }
 function findNextSong() {
-  if(current_song_id>=9&&!test_finished){
-    test_finished = true;
-    picking_out = true;
-    current_song_id = 0;
-    findNextSong();
-    return;
-  }
-  current_song_id++;
-  current_score = isGood();
-  if(picking_out){
-    while(map(current_score - average/average_counted,-6,6,0,100)<50){
-      current_song_id++;
-      current_score = isGood();
+  if(!test_finished){
+    current_song_id++;
+    current_score = isGood();
+    if(picking_out){
+      while(map(current_score - average/average_counted,-6,6,0,100)<50){
+        current_song_id++;
+        current_score = isGood();
+      }
     }
+    average+=current_score;
+    average_counted++;
   }
-  average+=current_score;
-  average_counted++;
-  console.log(current_score);
 }
 function keyPressed(){
   if(key==' '){
