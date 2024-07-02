@@ -24,6 +24,25 @@ let average_counted = 0;
 let picking_out = false;
 let test_finished = false;
 let test_size = 10;
+var tag = document.createElement('script');
+tag.src = "https://www.youtube.com/iframe_api";
+var firstScriptTag = document.getElementsByTagName('script')[0];
+firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+var player;
+function onYouTubeIframeAPIReady() {
+  player = new YT.Player('player', {
+    height: '390',
+    width: '640',
+    videoId: 'M7lc1UVf-VE',
+    playerVars: {
+      'playsinline': 1
+    },
+    events: {
+      'onReady': onPlayerReady,
+      'onStateChange': onPlayerStateChange
+    }
+  });
+}
 function preload() {
   songs = loadJSON("/new_data.json");
 }
@@ -49,13 +68,19 @@ function draw() {
     text("Please drag the slider to rate the song, then click next.", width/2, height-75-46);
   }
   if(average_counted>=test_size){
+    if(!test_finished){
+      current_song_id=0;
+    }
     test_finished=true;
+    
     text("You have completed the test!",width/2,height-75-46);
   }
   fill(255);
   textSize(25);
   textAlign(LEFT,TOP);
-  text((current_song_id+1)+'/'+test_size,0,50);
+  if(!test_finished){
+    text((current_song_id+1)+'/'+test_size,0,50);
+  }
 }
 function findNextSong() {
   if(!test_finished){
@@ -164,6 +189,7 @@ let videoDiv;
 function change_video(){
   let video_id = songs[current_song_id]["video_id"];
   console.log(songs[current_song_id],video_id);
+  /*
   let iframeSrc = 'https://www.youtube.com/embed/'+video_id+'?rel=0&showinfo=0&modestbranding=1&autoplay=1&controls=1';
   if (current_video) {
     current_video.remove();
@@ -173,8 +199,11 @@ function change_video(){
   }else{
     videoDiv = createDiv('<iframe id="iframe" width="'+(height-150-46)/9*16+'" height="'+(height-150-46)+'" src="' + iframeSrc + '" frameborder="0" allow=\'autoplay\'></iframe>');
   }
+  */
+  player.loadVideoById(video_id,0);
 }
 function setup_video() {
+  /*
   window.parent.document.getElementById('iframe').width = (width-textWidth((current_song_id+1)+'/'+test_size))+'px';
   window.parent.document.getElementById('iframe').height = (width)/16*9+'px';
   videoDiv.position(textWidth((current_song_id+1)+'/'+test_size), 50);
@@ -183,6 +212,7 @@ function setup_video() {
     window.parent.document.getElementById('iframe').width = (height-194)/9*16+'px';
   }
   current_video = videoDiv.elt;
+  */
 }
 document.addEventListener("DOMContentLoaded", function() {
   const button = document.getElementById("next");
@@ -374,3 +404,8 @@ slider.addEventListener('input', function() {
     slider.style.setProperty('--thumb-percent', thumbPercent);
     slider.style.setProperty('--thumb-color', thumbColor);
 });
+function onPlayerReady(event) {
+  event.target.playVideo();
+}
+function onPlayerStateChange(event) {
+}
