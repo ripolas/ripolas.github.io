@@ -29,6 +29,7 @@ tag.src = "https://www.youtube.com/iframe_api";
 var firstScriptTag = document.getElementsByTagName('script')[0];
 firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 var player;
+let video_loaded = false;
 function onYouTubeIframeAPIReady() {
   player = new YT.Player('player', {
     height: '390',
@@ -42,12 +43,14 @@ function onYouTubeIframeAPIReady() {
       'onStateChange': onPlayerStateChange
     }
   });
+  video_loaded=true;
 }
 function preload() {
   songs = loadJSON("/new_data.json");
 }
 function setup() {
   createCanvas(windowWidth, windowHeight);
+  while(!video_loaded);
   slider_size = width/9;
   current_song_id=0;
   if (localStorage.getItem('combinedData') !== null) {
@@ -201,8 +204,19 @@ function change_video(){
   }
   */
   player.loadVideoById(video_id,0);
+  player.playVideo();
 }
 function setup_video() {
+  let w;
+  let h;
+  if((width-2*textWidth((current_song_id+1)+'/'+test_size))/16*9>=height-194){
+    h = (height-194);
+    w = (height-194)/9*16;
+  }else{
+    h = (width-2*textWidth((current_song_id+1)+'/'+test_size))/16*9;
+    w = (width-2*textWidth((current_song_id+1)+'/'+test_size));
+  }
+  player.setSize(w,h);
   /*
   window.parent.document.getElementById('iframe').width = (width-textWidth((current_song_id+1)+'/'+test_size))+'px';
   window.parent.document.getElementById('iframe').height = (width)/16*9+'px';
