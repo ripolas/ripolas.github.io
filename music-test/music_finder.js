@@ -30,11 +30,26 @@ var firstScriptTag = document.getElementsByTagName('script')[0];
 firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 var player;
 let video_loaded = false;
+let ready = false;
 function onYouTubeIframeAPIReady() {
+  video_loaded=true;
+}
+function preload() {
+  songs = loadJSON("/new_data.json");
+}
+function setup() {
+  createCanvas(windowWidth, windowHeight);
+  slider_size = width/9;
+  current_song_id=0;
+  if (localStorage.getItem('combinedData') !== null) {
+    loadFromLocal();
+  }
+  fix_slider();
+  while(!video_loaded);
   player = new YT.Player('player', {
     height: '390',
     width: '640',
-    videoId: 'M7lc1UVf-VE',
+    videoId: songs[current_song_id]["video_id"],
     playerVars: {
       'playsinline': 1
     },
@@ -43,23 +58,9 @@ function onYouTubeIframeAPIReady() {
       'onStateChange': onPlayerStateChange
     }
   });
-  video_loaded=true;
-}
-function preload() {
-  songs = loadJSON("/new_data.json");
-}
-function setup() {
-  createCanvas(windowWidth, windowHeight);
-  while(!video_loaded);
-  slider_size = width/9;
-  current_song_id=0;
-  if (localStorage.getItem('combinedData') !== null) {
-    loadFromLocal();
-  }
+  while(!ready);
   change_video();
   setup_video();
-  console.log(Object.keys(songs).length);
-  fix_slider();
 }
 function draw() {
   setup_video();
@@ -419,6 +420,7 @@ slider.addEventListener('input', function() {
     slider.style.setProperty('--thumb-color', thumbColor);
 });
 function onPlayerReady(event) {
+  ready=true;
   event.target.playVideo();
 }
 function onPlayerStateChange(event) {
