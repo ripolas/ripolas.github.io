@@ -383,6 +383,7 @@ function saveToLocal() {
   localStorage.setItem('combinedData', JSON.stringify(combinedData));
 }
 function loadFromLocal() {
+  try{
   let combinedDataJsonString = localStorage.getItem('combinedData');
   let combinedData = JSON.parse(combinedDataJsonString);
   bpm_votes = combinedData.bpm_votes;
@@ -402,6 +403,25 @@ function loadFromLocal() {
   average_counted = combinedData.average_counted;
   current_score = isGood();
   test_finished = combinedData.test_finished;
+  }catch(err){
+    bpm_votes = {};
+    bpm_total_votes = {};
+    author_votes = {};
+    author_total_votes = {};
+    year_votes = {};
+    year_total_votes = {};
+    chord_votes = {};
+    chord_total_votes = {};
+    genre_votes = {};
+    genre_total_votes = {};
+    key_votes = {};
+    key_total_votes = {};
+    average=0;
+    average_counted=0;
+    current_song_id = 0;
+    test_finished=false;
+    current_score = 0;
+  }
 }
 function windowResized() { 
   resizeCanvas(windowWidth, windowHeight); 
