@@ -56,10 +56,11 @@ function setup() {
   });
 }
 function draw() {
+  resizeCanvas(windowWidth, windowHeight); 
   setup_video();
   if(ready&&!video_showed){
+    console.log("THIS");
     change_video();
-    setup_video();
   }
   background(0);
   fill(255);
@@ -75,7 +76,6 @@ function draw() {
       setup_video();
     }
     test_finished=true;
-    
     text("You have completed the test!",width/2,height-75-46);
   }
   fill(255);
@@ -377,7 +377,8 @@ function saveToLocal() {
     genre_total_votes: genre_total_votes,
     current_song_id: current_song_id,
     average: average,
-    average_counted: average_counted
+    average_counted: average_counted,
+    test_finished:test_finished
   };
   localStorage.setItem('combinedData', JSON.stringify(combinedData));
 }
@@ -400,6 +401,7 @@ function loadFromLocal() {
   average = combinedData.average;
   average_counted = combinedData.average_counted;
   current_score = isGood();
+  test_finished = combinedData.test_finished;
 }
 function windowResized() { 
   resizeCanvas(windowWidth, windowHeight); 
