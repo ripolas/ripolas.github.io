@@ -25,15 +25,12 @@ let picking_out = false;
 let test_finished = false;
 let test_size = 10;
 var tag = document.createElement('script');
+let ready = false;
 tag.src = "https://www.youtube.com/iframe_api";
 var firstScriptTag = document.getElementsByTagName('script')[0];
 firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 var player;
-let video_loaded = false;
-let ready = false;
-function onYouTubeIframeAPIReady() {
-  video_loaded=true;
-}
+let video_showed = false;
 function preload() {
   songs = loadJSON("/new_data.json");
 }
@@ -45,7 +42,6 @@ function setup() {
     loadFromLocal();
   }
   fix_slider();
-  while(!video_loaded);
   player = new YT.Player('player', {
     height: '390',
     width: '640',
@@ -58,12 +54,13 @@ function setup() {
       'onStateChange': onPlayerStateChange
     }
   });
-  while(!ready);
-  change_video();
-  setup_video();
 }
 function draw() {
   setup_video();
+  if(ready&&!video_showed){
+    change_video();
+    setup_video();
+  }
   background(0);
   fill(255);
   textAlign(LEFT, CENTER);
@@ -193,6 +190,7 @@ let videoDiv;
 function change_video(){
   let video_id = songs[current_song_id]["video_id"];
   console.log(songs[current_song_id],video_id);
+  video_showed=true;
   /*
   let iframeSrc = 'https://www.youtube.com/embed/'+video_id+'?rel=0&showinfo=0&modestbranding=1&autoplay=1&controls=1';
   if (current_video) {
@@ -421,6 +419,7 @@ slider.addEventListener('input', function() {
 });
 function onPlayerReady(event) {
   ready=true;
+  console.log("READY");
   event.target.playVideo();
 }
 function onPlayerStateChange(event) {
