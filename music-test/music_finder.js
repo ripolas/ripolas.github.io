@@ -71,6 +71,8 @@ function draw() {
   if(average_counted>=test_size){
     if(!test_finished){
       current_song_id=0;
+      change_video();
+      setup_video();
     }
     test_finished=true;
     
