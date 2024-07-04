@@ -27,6 +27,7 @@ let test_size = 10;
 var tag = document.createElement('script');
 let ready = false;
 let paragraph;
+let counter_element;
 tag.src = "https://www.youtube.com/iframe_api";
 var firstScriptTag = document.getElementsByTagName('script')[0];
 firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
@@ -37,12 +38,15 @@ function preload() {
 }
 function setup() {
   createCanvas(windowWidth, windowHeight);
+  let stars = document.querySelectorAll('input[name="rating"]');
+  for (let star of stars) {
+    star.addEventListener('change', handleRating);
+  }
   slider_size = width/9;
   current_song_id=0;
   if (localStorage.getItem('combinedData') !== null) {
     loadFromLocal();
   }
-  fix_slider();
   player = new YT.Player('player', {
     height: '390',
     width: '640',
@@ -55,7 +59,8 @@ function setup() {
       'onStateChange': onPlayerStateChange
     }
   });
-  paragraph = select('#textP')
+  paragraph = select('#textP');
+  counter_element = select('#counter');
 }
 function draw() {
   resizeCanvas(windowWidth, windowHeight); 
@@ -64,7 +69,7 @@ function draw() {
     console.log("THIS");
     change_video();
   }
-  background('#f4f4f4');
+  background('#212121');
   if(average_counted<test_size){
     paragraph.html("Please drag the slider to rate the song, then click next.");
   }
@@ -73,15 +78,15 @@ function draw() {
       current_song_id=0;
       change_video();
       setup_video();
+      test_finished=true;
+      saveToLocal();
     }
-    test_finished=true;
-     paragraph.html("You have completed the test!",width/2,height-75-46);
+    paragraph.html("You have completed the test!");
   }
-  fill(0);
-  textSize(25);
-  textAlign(LEFT,TOP);
   if(!test_finished){
-    text((current_song_id+1)+'/'+test_size,0,50);
+    counter_element.html((current_song_id+1)+'/'+test_size,0,50);
+  }else{
+    counter_element.html('');
   }
 }
 function findNextSong() {
@@ -172,19 +177,7 @@ function add_vote(amount) {
   }
 }
 function next() {
-  for (let i = 0; i<abs(slider.value-5); i++) {
-    if (slider.value>5) {
-      add_vote(1);
-    } else {
-      add_vote(-1);
-    }
-  }
-  findNextSong();
-  slider.value = 5;
-  fix_slider();
-  change_video();
-  setup_video();
-  saveToLocal();
+  
 }
 let current_video;
 let videoDiv;
@@ -426,24 +419,37 @@ function windowResized() {
   resizeCanvas(windowWidth, windowHeight); 
   setup_video();
 } 
-function fix_slider(){
-  const value = (slider.value - slider.min) / (slider.max - slider.min);
-  const thumbColor = `hsl(${(value) * 120}, 100%, 40%)`;
-  const thumbPercent = `${value * 100}%`;
-  slider.style.setProperty('--thumb-percent', thumbPercent);
-  slider.style.setProperty('--thumb-color', thumbColor);
-}
-slider.addEventListener('input', function() {
-    const value = (slider.value - slider.min) / (slider.max - slider.min);
-    const thumbColor = `hsl(${(value) * 120}, 100%, 40%)`;
-    const thumbPercent = `${value * 100}%`;
-    slider.style.setProperty('--thumb-percent', thumbPercent);
-    slider.style.setProperty('--thumb-color', thumbColor);
-});
 function onPlayerReady(event) {
   ready=true;
   console.log("READY");
   event.target.playVideo();
 }
 function onPlayerStateChange(event) {
+}
+function handleRating(event) {
+  let rating = event.target.value;
+  console.log('Selected rating:', rating);
+  displayRating(rating);
+}
+
+function displayRating(rating) {
+  for (let i = 0; i<abs(rating-3); i++) {
+    if (rating>3) {
+      add_vote(1);
+    } else {
+      add_vote(-1);
+    }
+  }
+  findNextSong();
+  change_video();
+  setup_video();
+  saveToLocal();
+  resetRating();
+}
+function resetRating() {
+  let stars = document.querySelectorAll('input[name="rating"]');
+  for (let star of stars) {
+    star.checked = false;
+  }
+  console.log('Rating reset');
 }

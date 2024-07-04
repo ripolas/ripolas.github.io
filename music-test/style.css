@@ -1,9 +1,9 @@
 body {
   padding: 0;
   margin: 0;
-  background-color: #f4f4f4;
+  background-color: #212121;
   overflow: hidden;
-  color: #333333;
+  color: #ffffff;
   font-family: 'Roboto';
 }
 
@@ -15,68 +15,42 @@ button[id=next]{
   bottom: 0px;
   right: 0px;
   height: 50px;
+  font-weight: 600;
+  font-size:25px;
   width: 10%;
-  background-color: #1e3d59;
-  color: #ffffff;
+  background-color: #328754;
+  line-height: 110%;
+  color: #fff;
   border: none;
+  border-radius: 5px;
   transition: 0.1s;
 }
 p[id=textP]{
-  font-size: 20px;
+  font-family: 'Roboto';
+  font-weight: 600;
+  font-size: 25px;
   width: 100%;
   position:absolute;
-  display: inline;
   text-align: center;
   margin:10px;
   cursor:context-menu;
   bottom:50px;
-  color:#000000;
+}
+p[id=counter]{
+  font-family: 'Roboto';
+  font-weight: 600;
+  font-size: 25px;
+  width: 100%;
+  position:absolute;
+  text-align: left;
+  margin:5px;
+  cursor:context-menu;
+  top:50px;
 }
 button[id=next]:hover{
-  background-color: #4a90e2;
+  transition: all .3s ease-in-out;
+  background: #276941;
 }
-.slider {
-  position: absolute;
-  margin: 0;
-  padding: 0;
-  bottom: 0;
-  left: 0;
-  cursor:pointer;
-  -webkit-appearance: none;
-  width: 90%;
-  height: 50px;
-  border: none; /* Remove the border to make it flush */
-  background: linear-gradient(to right, var(--thumb-color, #CCCC00) 0%, var(--thumb-color, #CCCC00) var(--thumb-percent, 50%), transparent var(--thumb-percent, 50%), transparent 100%);
-  -webkit-transition: .2s;
-  transition: .2s;
-}
-
-.slider::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  appearance: none;
-  width: 25px;
-  height: 50px;
-  cursor: pointer;
-  background-color: var(--thumb-color, #CCCC00); /* Set the background color to match the thumb color */
-}
-
-.slider::-moz-range-thumb { 
-  -moz-appearance: none;
-  appearance: none;
-  width: 25px;
-  height: 50px;
-  cursor: pointer;
-  background-color: var(--thumb-color, #CCCC00); /* Set the background color to match the thumb color */
-}
-
-
-
-
-
-.slider::-moz-focus-outer { 
-  border: 0;
-}
-
 h1{
   font-size:36px;
 }
@@ -85,7 +59,7 @@ h2 {
   font-size: 24px;
 }
 
-ul {
+ul[id=navigation] {
   list-style-type: none;
   margin: 0;
   padding: 0;
@@ -95,7 +69,6 @@ ul {
   top: 0;
   width: 100%;
 }
-
 li {
   float: left;
   margin-right: 10px;
@@ -127,4 +100,34 @@ li a:hover {
   left: 50%;
   transform: translateX(-50%);
   z-index: 9999;
+}
+.rating {
+  position:absolute;
+  bottom:0;
+  left:50%;
+  transform: translateX(-50%);
+  display: inline-block;
+}
+
+.rating input {
+  display: none;
+}
+
+.rating label {
+  float: right;
+  cursor: pointer;
+  color: #ccc;
+  transition: color 0.3s;
+}
+
+.rating label:before {
+  content: '\2605';
+  font-size: 50px;
+}
+
+.rating input:checked ~ label,
+.rating label:hover,
+.rating label:hover ~ label {
+  color: #328754;
+  transition: color 0.3s;
 }
