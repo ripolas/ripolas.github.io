@@ -62,6 +62,7 @@ function setup() {
   paragraph = select('#textP');
   counter_element = select('#counter');
 }
+let progress_text ='';
 function draw() {
   resizeCanvas(windowWidth, windowHeight); 
   setup_video();
@@ -71,7 +72,7 @@ function draw() {
   }
   background('#212121');
   if(average_counted<test_size){
-    paragraph.html("Please drag the slider to rate the song, then click next.");
+    paragraph.html("Please rate the song. Progress: "+progress_text);
   }
   if(average_counted>=test_size){
     if(!test_finished){
@@ -84,9 +85,9 @@ function draw() {
     paragraph.html("You have completed the test!");
   }
   if(!test_finished){
-    counter_element.html((current_song_id+1)+'/'+test_size,0,50);
+    progress_text=(current_song_id+1)+'/'+test_size;
   }else{
-    counter_element.html('');
+    progress_text='';
   }
 }
 function findNextSong() {
@@ -192,7 +193,8 @@ function setup_video() {
   let w;
   let h;
   //let x = width-2*textWidth((current_song_id+1)+'/'+test_size);
-  let x = width - 2*100;
+  //let x = width - 2*100;
+  let x = width;
   let y =height-150;
   if(x/16*9>=y){
     h = y;
