@@ -26,6 +26,7 @@ let test_finished = false;
 let test_size = 10;
 var tag = document.createElement('script');
 let ready = false;
+let paragraph;
 tag.src = "https://www.youtube.com/iframe_api";
 var firstScriptTag = document.getElementsByTagName('script')[0];
 firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
@@ -54,6 +55,7 @@ function setup() {
       'onStateChange': onPlayerStateChange
     }
   });
+  paragraph = select('#textP')
 }
 function draw() {
   resizeCanvas(windowWidth, windowHeight); 
@@ -62,12 +64,9 @@ function draw() {
     console.log("THIS");
     change_video();
   }
-  background(0);
-  fill(255);
-  textAlign(LEFT, CENTER);
-  textAlign(CENTER, CENTER);
+  background('#f4f4f4');
   if(average_counted<test_size){
-    text("Please drag the slider to rate the song, then click next.", width/2, height-75-46);
+    paragraph.html("Please drag the slider to rate the song, then click next.");
   }
   if(average_counted>=test_size){
     if(!test_finished){
@@ -76,9 +75,9 @@ function draw() {
       setup_video();
     }
     test_finished=true;
-    text("You have completed the test!",width/2,height-75-46);
+     paragraph.html("You have completed the test!",width/2,height-75-46);
   }
-  fill(255);
+  fill(0);
   textSize(25);
   textAlign(LEFT,TOP);
   if(!test_finished){
@@ -210,9 +209,9 @@ function change_video(){
 function setup_video() {
   let w;
   let h;
-  if((width-2*textWidth((current_song_id+1)+'/'+test_size))/16*9>=height-194){
-    h = (height-194);
-    w = (height-194)/9*16;
+  if((width-2*textWidth((current_song_id+1)+'/'+test_size))/16*9>=height-150){
+    h = (height-150);
+    w = (height-150)/9*16;
   }else{
     h = (width-2*textWidth((current_song_id+1)+'/'+test_size))/16*9;
     w = (width-2*textWidth((current_song_id+1)+'/'+test_size));
