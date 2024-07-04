@@ -185,68 +185,23 @@ function change_video(){
   let video_id = songs[current_song_id]["video_id"];
   console.log(songs[current_song_id],video_id);
   video_showed=true;
-  /*
-  let iframeSrc = 'https://www.youtube.com/embed/'+video_id+'?rel=0&showinfo=0&modestbranding=1&autoplay=1&controls=1';
-  if (current_video) {
-    current_video.remove();
-  }
-  if (((width)/16*9)<=height-150-46) {
-    videoDiv = createDiv('<iframe id="iframe" width="'+(width)+'" height="'+(width)/16*9+'" src="' + iframeSrc + '" frameborder="0" allow=\'autoplay\'></iframe>');
-  }else{
-    videoDiv = createDiv('<iframe id="iframe" width="'+(height-150-46)/9*16+'" height="'+(height-150-46)+'" src="' + iframeSrc + '" frameborder="0" allow=\'autoplay\'></iframe>');
-  }
-  */
   player.loadVideoById(video_id,0);
   player.playVideo();
 }
 function setup_video() {
   let w;
   let h;
-  if((width-2*textWidth((current_song_id+1)+'/'+test_size))/16*9>=height-150){
-    h = (height-150);
-    w = (height-150)/9*16;
+  //let x = width-2*textWidth((current_song_id+1)+'/'+test_size);
+  let x = width - 2*100;
+  let y =height-150;
+  if(x/16*9>=y){
+    h = y;
+    w = y/9*16;
   }else{
-    h = (width-2*textWidth((current_song_id+1)+'/'+test_size))/16*9;
-    w = (width-2*textWidth((current_song_id+1)+'/'+test_size));
+    h = x/16*9;
+    w = x;
   }
   player.setSize(w,h);
-  /*
-  window.parent.document.getElementById('iframe').width = (width-textWidth((current_song_id+1)+'/'+test_size))+'px';
-  window.parent.document.getElementById('iframe').height = (width)/16*9+'px';
-  videoDiv.position(textWidth((current_song_id+1)+'/'+test_size), 50);
-  if((width)/16*9>=height-194){
-    window.parent.document.getElementById('iframe').height = (height-194)+'px';
-    window.parent.document.getElementById('iframe').width = (height-194)/9*16+'px';
-  }
-  current_video = videoDiv.elt;
-  */
-}
-document.addEventListener("DOMContentLoaded", function() {
-  const button = document.getElementById("next");
-  button.addEventListener("click", next);
-}
-);
-function nuke() {
-  bpm_votes = {};
-  bpm_total_votes = {};
-  author_votes = {};
-  author_total_votes = {};
-  year_votes = {};
-  year_total_votes = {};
-  key_votes = {};
-  key_total_votes = {};
-  chord_votes = {};
-  chord_total_votes = {};
-  genre_votes = {};
-  genre_total_votes = {};
-  average = 0;
-  average_counted = 0;
-  current_song_id = -1;
-  current_song_id = 0;
-  change_video();
-  setup_video();
-  current_score = isGood();
-  saveToLocal();
 }
 function isGood() {
   lower_bound = 0;
