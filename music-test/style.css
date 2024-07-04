@@ -102,14 +102,12 @@ li a:hover {
   z-index: 9999;
 }
 .rating {
+  direction: rtl;
   position: absolute;
   bottom: 0;
+  white-space: nowrap;
   left: 50%;
   transform: translateX(-50%);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  white-space: nowrap;
 }
 
 .rating input {
@@ -133,3 +131,4 @@ li a:hover {
   color: #328754;
   transition: color 0.3s;
 }
+
