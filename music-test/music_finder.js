@@ -69,10 +69,10 @@ function draw() {
     change_video();
   }
   background('#212121');
-  if(average_counted<test_size){
+  if(current_song_id<test_size){
     paragraph.html("Please rate the song. Progress: "+progress_text);
   }
-  if(average_counted>=test_size){
+  if(current_song_id>=test_size){
     if(!test_finished){
       current_song_id=0;
       change_video();
