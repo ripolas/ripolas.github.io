@@ -93,7 +93,7 @@ function calculate_average(){
   console.log("CALCULATING");
   average = 0;
   average_counted = 0;
-  for(let i = 0;i<songs.length;i++){
+  for(let i = 0;i<Object.keys(songs).length;i++){
     average += isGood(i);
     average_counted ++;
   }
