@@ -105,7 +105,7 @@ function findNextSong() {
   }else{
     do{
       current_song_id++;
-      current_score = isGood();
+      current_score = isGood(current_song_id);
       console.log(current_score);
     }while(current_score<(average/average_counted)*1.5);
       console.log(current_song_id);
