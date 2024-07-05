@@ -392,7 +392,7 @@ function onPlayerReady(event) {
 function onPlayerStateChange(event) {        
   if(event.data === 0) {
       for (let i = 0; i<abs(current_rating-3); i++) {
-        if (rating>3) {
+        if (current_rating>3) {
           add_vote(1);
         } else {
           add_vote(-1);
