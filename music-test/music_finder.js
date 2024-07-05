@@ -93,10 +93,8 @@ function calculate_average(){
   console.log("CALCULATING");
   average = 0;
   average_counted = 0;
-  for(let i = 0;i<test_size;i++){
-    current_song_id=i;
-    console.log(isGood());
-    average += isGood();
+  for(let i = 0;i<songs.length;i++){
+    average += isGood(i);
     average_counted ++;
   }
   console.log("CALCED: "+average/average_counted);
@@ -216,27 +214,27 @@ function setup_video() {
   }
   player.setSize(w,h);
 }
-function isGood() {
+function isGood(a) {
   lower_bound = 0;
   upper_bound = 0;
   let cbpm, cauthor, cyear, ckey, cchords, cgenres;
-  if ("bpm" in songs[current_song_id]) {
-    cbpm = songs[current_song_id]["bpm"];
+  if ("bpm" in songs[a]) {
+    cbpm = songs[a]["bpm"];
   }
-  if ("author" in songs[current_song_id]) {
-    cauthor = songs[current_song_id]["author"];
+  if ("author" in songs[a]) {
+    cauthor = songs[a]["author"];
   }
-  if ("year" in songs[current_song_id]) {
-    cyear = songs[current_song_id]["year"];
+  if ("year" in songs[a]) {
+    cyear = songs[a]["year"];
   }
-  if ("key" in songs[current_song_id]) {
-    ckey = songs[current_song_id]["key"];
+  if ("key" in songs[a]) {
+    ckey = songs[a]["key"];
   }
-  if ("chords" in songs[current_song_id]) {
-    cchords = songs[current_song_id]["chords"];
+  if ("chords" in songs[a]) {
+    cchords = songs[a]["chords"];
   }
-  if ("genres" in songs[current_song_id]) {
-    cgenres = songs[current_song_id]["genres"];
+  if ("genres" in songs[a]) {
+    cgenres = songs[a]["genres"];
   }
   let score = 0;
   if (cbpm!==undefined) {
@@ -281,7 +279,7 @@ function isGood() {
   }
   let genre_score = 0;
   let genre_amount = 0; //how many were sumed up
-  let total_genres = songs[current_song_id]["genres"].length;
+  let total_genres = songs[a]["genres"].length;
   if (cgenres!==undefined) {
     for (let i in cgenres) {
       if (i in genre_votes) {
@@ -300,7 +298,7 @@ function isGood() {
   }
   let chord_score = 0;
   let chord_amount = 0; //how many were sumed up
-  let total_chords = songs[current_song_id]["chords"].length;
+  let total_chords = songs[a]["chords"].length;
   if (cchords!==undefined) {
     for (let i in cchords) {
       if (i in chord_votes) {
@@ -359,7 +357,7 @@ function loadFromLocal() {
   current_song_id = combinedData.current_song_id;
   average = combinedData.average;
   average_counted = combinedData.average_counted;
-  current_score = isGood();
+  current_score = isGood(current_song_id);
   test_finished = combinedData.test_finished;
   }catch(err){
     bpm_votes = {};
