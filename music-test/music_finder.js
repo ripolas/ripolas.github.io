@@ -100,7 +100,7 @@ function findNextSong() {
       current_score = isGood();
       console.log(current_score);
     }while(current_score<(average/average_counted)*1.5);
-    console.log(current_song_id);
+      console.log(current_song_id);
   }
 }
 function add_vote(amount) {
