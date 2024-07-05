@@ -103,6 +103,7 @@ function findNextSong() {
   if(!test_finished){
     current_song_id++;
   }else{
+    calculate_average();
     do{
       current_song_id++;
       current_score = isGood(current_song_id);
