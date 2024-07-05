@@ -100,6 +100,7 @@ function calculate_average(){
   console.log("CALCED: "+average/average_counted);
 }
 function findNextSong() {
+  current_rating=3;
   if(!test_finished){
     current_song_id++;
   }else{
@@ -390,6 +391,13 @@ function onPlayerReady(event) {
 }
 function onPlayerStateChange(event) {        
   if(event.data === 0) {
+      for (let i = 0; i<abs(current_rating-3); i++) {
+        if (rating>3) {
+          add_vote(1);
+        } else {
+          add_vote(-1);
+        }
+      }
       findNextSong();
       change_video();
       setup_video();
@@ -401,20 +409,39 @@ function handleRating(event) {
   let rating = event.target.value;
   displayRating(rating);
 }
-
+let current_rating=3;
 function displayRating(rating) {
-  for (let i = 0; i<abs(rating-3); i++) {
-    if (rating>3) {
-      add_vote(1);
-    } else {
-      add_vote(-1);
+  if(test_finished){
+    if(rating<=3){
+      for (let i = 0; i<abs(rating-3); i++) {
+        if (rating>3) {
+          add_vote(1);
+        } else {
+          add_vote(-1);
+        }
+      }
+      findNextSong();
+      change_video();
+      setup_video();
+      saveToLocal();
+      resetRating();
+    }else{
+      current_rating = rating;
     }
+  }else{
+    for (let i = 0; i<abs(rating-3); i++) {
+      if (rating>3) {
+        add_vote(1);
+      } else {
+        add_vote(-1);
+      }
+    }
+    findNextSong();
+    change_video();
+    setup_video();
+    saveToLocal();
+    resetRating();
   }
-  findNextSong();
-  change_video();
-  setup_video();
-  saveToLocal();
-  resetRating();
 }
 function resetRating() {
   let stars = document.querySelectorAll('input[name="rating"]');
