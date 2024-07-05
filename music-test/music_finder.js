@@ -382,7 +382,9 @@ function onPlayerReady(event) {
   event.target.playVideo();
 }
 function onPlayerStateChange(event) {        
-  if(event.data === 0) {          
+  console.log("EVENT");
+  if(event.data === 0) {
+      console.log("NEXT");
       next();
   }
 }
