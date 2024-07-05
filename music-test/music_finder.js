@@ -412,7 +412,7 @@ function handleRating(event) {
 let current_rating=3;
 function displayRating(rating) {
   if(test_finished){
-    if(rating<=3){
+    if(rating<3){
       for (let i = 0; i<abs(rating-3); i++) {
         if (rating>3) {
           add_vote(1);
