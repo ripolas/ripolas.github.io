@@ -78,6 +78,7 @@ function draw() {
       change_video();
       setup_video();
       test_finished=true;
+      calculate_average();
       saveToLocal();
     }
     paragraph.html("You have completed the test!");
@@ -88,12 +89,18 @@ function draw() {
     progress_text='';
   }
 }
+function calculate_average(){
+  average = 0;
+  average_counted = 0;
+  for(let i = 0;i<test_size;i++){
+    current_song_id=i;
+    average += isGood();
+    average_counted ++;
+  }
+}
 function findNextSong() {
   if(!test_finished){
     current_song_id++;
-    current_score = isGood();
-    average+=current_score;
-    average_counted++;
   }else{
     do{
       current_song_id++;
