@@ -90,13 +90,16 @@ function draw() {
   }
 }
 function calculate_average(){
+  console.log("CALCULATING");
   average = 0;
   average_counted = 0;
   for(let i = 0;i<test_size;i++){
     current_song_id=i;
+    console.log(isGood());
     average += isGood();
     average_counted ++;
   }
+  console.log("CALCED: "+average/average_counted);
 }
 function findNextSong() {
   if(!test_finished){
