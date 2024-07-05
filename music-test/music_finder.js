@@ -381,7 +381,10 @@ function onPlayerReady(event) {
   ready=true;
   event.target.playVideo();
 }
-function onPlayerStateChange(event) {
+function onPlayerStateChange(event) {        
+  if(event.data === 0) {          
+      next();
+  }
 }
 function handleRating(event) {
   let rating = event.target.value;
