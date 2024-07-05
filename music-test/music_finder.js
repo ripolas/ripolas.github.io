@@ -408,5 +408,13 @@ function resetRating() {
   for (let star of stars) {
     star.checked = false;
   }
+
+  // Force reflow/repaint
+  let dummy = document.createElement('div');
+  document.body.appendChild(dummy);
+  setTimeout(() => {
+    document.body.removeChild(dummy);
+  }, 0);
+
   console.log('Rating reset');
 }
