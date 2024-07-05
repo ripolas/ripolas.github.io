@@ -21,7 +21,6 @@ let upper_bound = 0;
 let songs_rated = 0;
 let average = 0;
 let average_counted = 0;
-let picking_out = false;
 let test_finished = false;
 let test_size = 10;
 var tag = document.createElement('script');
@@ -67,7 +66,6 @@ function draw() {
   resizeCanvas(windowWidth, windowHeight); 
   setup_video();
   if(ready&&!video_showed){
-    console.log("THIS");
     change_video();
   }
   background('#212121');
@@ -96,6 +94,12 @@ function findNextSong() {
     current_score = isGood();
     average+=current_score;
     average_counted++;
+  }else{
+    do{
+      current_song_id++;
+      current_score = isGood();
+      console.log(current_score);
+    }while(current_score<(average/average_counted)*1.5);
   }
 }
 function add_vote(amount) {
@@ -184,7 +188,6 @@ let current_video;
 let videoDiv;
 function change_video(){
   let video_id = songs[current_song_id]["video_id"];
-  console.log(songs[current_song_id],video_id);
   video_showed=true;
   player.loadVideoById(video_id,0);
   player.playVideo();
@@ -228,8 +231,6 @@ function isGood() {
     cgenres = songs[current_song_id]["genres"];
   }
   let score = 0;
-  console.log("BPM: "+bpm_votes[int(cbpm/10)]+" "+cbpm+" "+current_song_id);
-  console.log(bpm_votes);
   if (cbpm!==undefined) {
     if ((int(cbpm/10)+'') in bpm_votes) {
       score += bpm_votes[int(cbpm/10)+'']/bpm_total_votes[int(cbpm/10)];
@@ -378,14 +379,12 @@ function windowResized() {
 } 
 function onPlayerReady(event) {
   ready=true;
-  console.log("READY");
   event.target.playVideo();
 }
 function onPlayerStateChange(event) {
 }
 function handleRating(event) {
   let rating = event.target.value;
-  console.log('Selected rating:', rating);
   displayRating(rating);
 }
 
@@ -408,13 +407,4 @@ function resetRating() {
   for (let star of stars) {
     star.checked = false;
   }
-
-  // Force reflow/repaint
-  let dummy = document.createElement('div');
-  document.body.appendChild(dummy);
-  setTimeout(() => {
-    document.body.removeChild(dummy);
-  }, 0);
-
-  console.log('Rating reset');
 }
