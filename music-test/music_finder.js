@@ -181,9 +181,6 @@ function add_vote(amount) {
     }
   }
 }
-function next() {
-  
-}
 let current_video;
 let videoDiv;
 function change_video(){
@@ -382,10 +379,12 @@ function onPlayerReady(event) {
   event.target.playVideo();
 }
 function onPlayerStateChange(event) {        
-  console.log("EVENT");
   if(event.data === 0) {
-      console.log("NEXT");
-      next();
+      findNextSong();
+      change_video();
+      setup_video();
+      saveToLocal();
+      resetRating();
   }
 }
 function handleRating(event) {
